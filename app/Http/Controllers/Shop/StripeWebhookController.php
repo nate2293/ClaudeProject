@@ -15,7 +15,7 @@ use Stripe\Webhook;
 use UnexpectedValueException;
 
 /**
- * Receives Stripe Checkout webhooks: verifies the signature, records the event
+ * Receives Stripe webhooks for checkouts, refunds and disputes: verifies the signature, records the event
  * and queues it for processing, then replies straight away. Stripe expects a
  * quick 2xx, and no Stripe API call happens while it waits.
  *
@@ -24,21 +24,28 @@ use UnexpectedValueException;
  */
 class StripeWebhookController extends Controller
 {
+    /**
+     * Handled event types, each with the fields of its object kept with the event:
+     * everything needed to process and audit it, but no customer details (those
+     * are fetched from the API when a checkout is applied).
+     */
     private const HANDLED_EVENTS = [
-        'checkout.session.completed',
-        'checkout.session.async_payment_succeeded',
-        'checkout.session.async_payment_failed',
-        'checkout.session.expired',
+        'checkout.session.completed' => self::SESSION_FIELDS,
+        'checkout.session.async_payment_succeeded' => self::SESSION_FIELDS,
+        'checkout.session.async_payment_failed' => self::SESSION_FIELDS,
+        'checkout.session.expired' => self::SESSION_FIELDS,
+        'charge.refunded' => ['id', 'object', 'amount', 'amount_refunded', 'currency', 'payment_intent', 'refunded'],
+        'charge.dispute.created' => self::DISPUTE_FIELDS,
+        'charge.dispute.updated' => self::DISPUTE_FIELDS,
+        'charge.dispute.closed' => self::DISPUTE_FIELDS,
     ];
 
-    /**
-     * Session fields kept with the event. Everything needed to process and audit
-     * it, but no customer details (those are fetched from the API when applied).
-     */
-    private const STORED_SESSION_FIELDS = [
+    private const SESSION_FIELDS = [
         'id', 'object', 'status', 'payment_status', 'amount_total', 'currency',
         'client_reference_id', 'payment_intent', 'metadata',
     ];
+
+    private const DISPUTE_FIELDS = ['id', 'object', 'amount', 'currency', 'reason', 'status', 'payment_intent', 'charge', 'evidence_details'];
 
     public function __invoke(Request $request): Response
     {
@@ -60,7 +67,7 @@ class StripeWebhookController extends Controller
             return response('Invalid payload', 400);
         }
 
-        if (! in_array($event->type, self::HANDLED_EVENTS, true)) {
+        if (! array_key_exists($event->type, self::HANDLED_EVENTS)) {
             return response('Ignored', 200);
         }
 
@@ -80,17 +87,21 @@ class StripeWebhookController extends Controller
     /** @return array<string, mixed> */
     private function attributes(Event $event): array
     {
-        $session = Arr::only($event->data->object->toArray(), self::STORED_SESSION_FIELDS);
+        $object = Arr::only($event->data->object->toArray(), self::HANDLED_EVENTS[$event->type]);
+
+        if (isset($object['evidence_details'])) {
+            $object['evidence_details'] = Arr::only($object['evidence_details'], ['due_by']);
+        }
 
         return [
             'type' => $event->type,
-            'object_id' => $session['id'] ?? null,
+            'object_id' => $object['id'] ?? null,
             'payload' => [
                 'id' => $event->id,
                 'type' => $event->type,
                 'created' => $event->created,
                 'livemode' => $event->livemode,
-                'data' => ['object' => $session],
+                'data' => ['object' => $object],
             ],
         ];
     }

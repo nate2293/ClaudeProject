@@ -89,6 +89,35 @@ class Inventory
     }
 
     /**
+     * Put units of a sold line back into stock (e.g. a return). Never more than
+     * were sold on that line, however many times it's called.
+     *
+     * @return int Units actually restocked.
+     */
+    public function restock(OrderItem $item, int $units): int
+    {
+        if (! $item->stock_level_id || $units < 1) {
+            return 0;
+        }
+
+        return DB::transaction(function () use ($item, $units) {
+            $claimed = OrderItem::query()
+                ->whereKey($item->getKey())
+                ->whereRaw('restocked_quantity + ? <= quantity', [$units])
+                ->increment('restocked_quantity', $units);
+
+            if (! $claimed) {
+                return 0;
+            }
+
+            StockLevel::query()->whereKey($item->stock_level_id)->increment('on_hand', $units);
+            $item->refresh();
+
+            return $units;
+        });
+    }
+
+    /**
      * Lines that reserved stock, in a fixed order so concurrent transactions lock
      * rows in the same sequence (avoids deadlocks).
      *

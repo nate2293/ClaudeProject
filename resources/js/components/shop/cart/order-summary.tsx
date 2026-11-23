@@ -10,10 +10,12 @@ interface OrderSummaryProps {
     freeShippingThreshold?: number;
     /** ISO currency code; defaults to the shop currency. */
     currency?: string;
+    /** VAT included in the total, shown beneath it. */
+    vat?: { rate: string; amount: number } | null;
     children?: ReactNode;
 }
 
-export function OrderSummary({ subtotal, shipping, total, freeShippingThreshold, currency, children }: OrderSummaryProps) {
+export function OrderSummary({ subtotal, shipping, total, freeShippingThreshold, currency, vat, children }: OrderSummaryProps) {
     const remaining = freeShippingThreshold ? Math.max(freeShippingThreshold - subtotal, 0) : 0;
     const progress = freeShippingThreshold ? Math.min((subtotal / freeShippingThreshold) * 100, 100) : 100;
 
@@ -54,6 +56,12 @@ export function OrderSummary({ subtotal, shipping, total, freeShippingThreshold,
                     <dt>Total</dt>
                     <dd>{formatPrice(total, currency)}</dd>
                 </div>
+                {vat && (
+                    <div className="text-muted-foreground flex justify-between">
+                        <dt>Includes VAT at {vat.rate}</dt>
+                        <dd>{formatPrice(vat.amount, currency)}</dd>
+                    </div>
+                )}
             </dl>
 
             {children && <div className="mt-6">{children}</div>}

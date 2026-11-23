@@ -48,7 +48,13 @@ export default function CheckoutSuccess({ order }: { order: Order }) {
                     </section>
 
                     <div className="md:col-span-2">
-                        <OrderSummary subtotal={order.subtotal} shipping={order.shipping} total={order.total} currency={order.currency} />
+                        <OrderSummary
+                            subtotal={order.subtotal}
+                            shipping={order.shipping}
+                            total={order.total}
+                            currency={order.currency}
+                            vat={order.vat}
+                        />
                     </div>
                 </div>
 

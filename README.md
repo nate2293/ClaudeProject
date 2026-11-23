@@ -20,6 +20,11 @@ Stripe **test** keys to `.env`, then run
 and pay with the test card `4242 4242 4242 4242`. Webhooks are applied by the queue
 worker that `composer dev` starts.
 
+## Admin
+
+Register an account on the shop, then run `php artisan shop:make-admin you@example.com`
+and sign in at `/admin`.
+
 ## Tests
 
 ```bash

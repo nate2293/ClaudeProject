@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\User;
 use App\Payments\PaymentException;
 use App\Payments\PaymentGateway;
+use App\Support\Vat;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -41,6 +42,8 @@ class StartCheckout
         }
 
         $order = DB::transaction(function () use ($cart, $user) {
+            $vatRate = (int) config('shop.vat.rate');
+
             $order = Order::create([
                 'user_id' => $user?->id,
                 'email' => $user?->email,
@@ -48,6 +51,8 @@ class StartCheckout
                 'subtotal' => $cart->subtotal(),
                 'shipping' => $cart->shipping(),
                 'total' => $cart->total(),
+                'vat_rate' => $vatRate,
+                'vat_amount' => Vat::included($cart->total(), $vatRate),
             ]);
 
             $order->items()->createMany($cart->lines()->map(fn (CartLine $line) => [

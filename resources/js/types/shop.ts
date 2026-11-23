@@ -123,7 +123,7 @@ export interface Cart {
     total: number;
 }
 
-export type OrderStatus = 'pending' | 'processing' | 'paid' | 'failed' | 'cancelled';
+export type OrderStatus = 'pending' | 'processing' | 'paid' | 'failed' | 'cancelled' | 'partially_refunded' | 'refunded';
 
 export interface Order {
     reference: string;
@@ -133,6 +133,8 @@ export interface Order {
     subtotal: number;
     shipping: number;
     total: number;
+    /** VAT included in the total; null when the shop isn't charging VAT. */
+    vat: { rate: string; amount: number } | null;
     placedAt: string;
     items: {
         id: number;

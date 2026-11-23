@@ -15,6 +15,27 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Business details
+    |--------------------------------------------------------------------------
+    |
+    | Shown in emails, the privacy policy and the terms. UK law requires an
+    | online shop to show its legal name, geographic address and email, plus
+    | its company number and VAT number where it has them.
+    |
+    */
+
+    'business' => [
+        'legal_name' => env('SHOP_LEGAL_NAME', env('APP_NAME', 'Loom & Lane')),
+        'address' => env('SHOP_ADDRESS'),
+        'email' => env('SHOP_CONTACT_EMAIL', env('MAIL_FROM_ADDRESS')),
+        'company_number' => env('SHOP_COMPANY_NUMBER'),
+        'ico_number' => env('SHOP_ICO_NUMBER'),
+        'host' => env('SHOP_HOSTING_PROVIDER'),
+        'email_provider' => env('SHOP_EMAIL_PROVIDER'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Shipping
     |--------------------------------------------------------------------------
     */
@@ -34,6 +55,23 @@ return [
     'products_per_page' => 12,
 
     'max_quantity_per_line' => 10,
+
+    /*
+    |--------------------------------------------------------------------------
+    | VAT
+    |--------------------------------------------------------------------------
+    |
+    | Prices are VAT-inclusive. Each order records the rate and the VAT it
+    | contains (goods and delivery), which receipts and emails show. Rate in
+    | basis points: 2000 = 20% UK standard rate. Set 0 if not VAT-registered.
+    | Check with your accountant: children's clothing, for example, is zero-rated.
+    |
+    */
+
+    'vat' => [
+        'rate' => (int) env('SHOP_VAT_RATE_BPS', 2000),
+        'number' => env('SHOP_VAT_NUMBER'),
+    ],
 
     /*
     |--------------------------------------------------------------------------

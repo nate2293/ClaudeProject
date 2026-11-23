@@ -2,7 +2,7 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useForm } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import { CheckCircle2, LoaderCircle } from 'lucide-react';
 import { type FormEvent } from 'react';
 import { Container } from '../container';
@@ -20,12 +20,14 @@ export function NewsletterSignup() {
             <Container>
                 <div className="max-w-2xl">
                     <h2 className="font-display text-3xl sm:text-4xl">Hear about new collections first</h2>
-                    <p className="text-muted-foreground mt-3">One email when a new collection lands, plus 10% off your first order.</p>
+                    <p className="text-muted-foreground mt-3">
+                        One email when a new collection lands, and the occasional sale. No more than twice a month.
+                    </p>
 
                     {wasSuccessful ? (
                         <p className="mt-8 inline-flex items-center gap-2 text-sm font-medium" role="status">
                             <CheckCircle2 className="size-5" />
-                            You’re signed up. Look out for your 10% code in your inbox.
+                            Nearly done: check your inbox and click the link to confirm.
                         </p>
                     ) : (
                         <form onSubmit={handleSubmit} className="mt-8 max-w-md">
@@ -53,7 +55,13 @@ export function NewsletterSignup() {
                         </form>
                     )}
 
-                    <p className="text-muted-foreground mt-4 text-xs">Unsubscribe from any email. We never share your address.</p>
+                    <p className="text-muted-foreground mt-4 text-xs">
+                        Unsubscribe from any email in one click. We never share your address. See our{' '}
+                        <Link href={route('pages.privacy')} className="underline underline-offset-4">
+                            privacy policy
+                        </Link>
+                        .
+                    </p>
                 </div>
             </Container>
         </section>

@@ -57,6 +57,16 @@ class HandleInertiaRequests extends Middleware
                 'standardShippingRate' => config('shop.shipping.standard_rate'),
                 'maxQuantity' => config('shop.max_quantity_per_line'),
                 'lowStockThreshold' => config('shop.stock.low_stock_threshold'),
+                'business' => [
+                    'legalName' => config('shop.business.legal_name'),
+                    'address' => config('shop.business.address'),
+                    'email' => config('shop.business.email'),
+                    'companyNumber' => config('shop.business.company_number'),
+                    'vatNumber' => config('shop.vat.number'),
+                    'icoNumber' => config('shop.business.ico_number'),
+                    'host' => config('shop.business.host'),
+                    'emailProvider' => config('shop.business.email_provider'),
+                ],
             ],
             'cart' => fn () => ['count' => app(Cart::class)->count()],
             'flash' => fn () => [

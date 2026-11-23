@@ -4,11 +4,13 @@ namespace App\Actions\Checkout;
 
 use App\Enums\OrderStatus;
 use App\Inventory\Inventory;
+use App\Mail\OrderConfirmation;
 use App\Models\Order;
 use App\Payments\CheckoutResult;
 use App\Payments\CheckoutStatus;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * Applies the outcome of a checkout session to its order.
@@ -21,8 +23,7 @@ use Illuminate\Support\Facades\Log;
  * in any order and even at the same moment: each change is one conditional update,
  * and only the call that made it returns `true`. Stock is settled in the same
  * transaction as that change (paid → sold, cancelled/failed → released), so it
- * happens exactly once. Hang future side effects (confirmation emails) on the
- * return value too.
+ * happens exactly once, as does the order confirmation email.
  */
 class CompleteCheckout
 {
@@ -82,6 +83,10 @@ class CompleteCheckout
                 'order' => $order->reference,
                 'items' => array_map(fn ($item) => "{$item->product_name} ({$item->colour}, {$item->size})", $oversold),
             ]);
+        }
+
+        if ($changed && $order->email) {
+            Mail::to($order->email)->queue(new OrderConfirmation($order));
         }
 
         // The money has been taken either way, so the order is recorded as paid,

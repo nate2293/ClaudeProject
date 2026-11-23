@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Support\Vat;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,6 +22,7 @@ class OrderResource extends JsonResource
             'subtotal' => $this->subtotal,
             'shipping' => $this->shipping,
             'total' => $this->total,
+            'vat' => $this->vat_rate ? ['rate' => Vat::label($this->vat_rate), 'amount' => $this->vat_amount] : null,
             'placedAt' => $this->created_at->toIso8601String(),
             'items' => $this->items->map(fn (OrderItem $item) => [
                 'id' => $item->id,

@@ -111,6 +111,25 @@ class Product extends Model
         $query->whereNotNull('compare_at_price')->whereColumn('compare_at_price', '>', 'price');
     }
 
+    /**
+     * Make sure every colour × size has a stock level: new variants start at 0.
+     * Levels for variants no longer offered are removed unless units are held
+     * by an open checkout.
+     */
+    public function syncStockLevels(): void
+    {
+        $variants = collect($this->colours)->crossJoin($this->sizes)
+            ->map(fn (array $pair) => ['colour' => $pair[0]['name'], 'size' => $pair[1]]);
+
+        foreach ($variants as $variant) {
+            $this->stockLevels()->firstOrCreate($variant, ['on_hand' => 0]);
+        }
+
+        $this->stockLevels()->where('reserved', 0)->get()
+            ->reject(fn (StockLevel $level) => $variants->contains(['colour' => $level->colour, 'size' => $level->size]))
+            ->each->delete();
+    }
+
     public function hasColour(string $name): bool
     {
         return collect($this->colours)->contains('name', $name);

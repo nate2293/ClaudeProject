@@ -11,6 +11,7 @@ no extra services: see the README.
 | **Redis** (managed) | Sessions, cache, locks, rate limits, queues | A small instance is plenty. Must be shared by every app server. |
 | **S3-compatible bucket + CDN** | Product and category photos | e.g. S3 + CloudFront, or Cloudflare R2 with a public domain. |
 | **Sentry** | Exceptions and warning-level logs | The free tier is enough to start. |
+| **Email provider** | Order, shipping, refund and newsletter emails; password resets | Postmark, Resend or Amazon SES. |
 | **Meilisearch** (optional) | Product search with typo tolerance and ranking | Self-hosted or Meilisearch Cloud. Without it, search uses the database. |
 | **Uptime / heartbeat monitor** | `/up` checks and scheduler heartbeats | e.g. Better Stack, Healthchecks.io, Cronitor. |
 | **Stripe** | Payments | Live keys plus a webhook endpoint (step 4). |
@@ -93,6 +94,8 @@ not applied.
    - `checkout.session.async_payment_succeeded`
    - `checkout.session.async_payment_failed`
    - `checkout.session.expired`
+   - `charge.refunded` (refunds made in the dashboard update the order and email the customer)
+   - `charge.dispute.created`, `charge.dispute.updated`, `charge.dispute.closed`
 3. Copy the signing secret into `STRIPE_WEBHOOK_SECRET`.
 4. Send a test event from the dashboard and check that it returns `200`.
 
@@ -112,7 +115,63 @@ Processed events are kept for 90 days, and they never store customer details.
 The reconciliation job is a safety net. Payments still complete if the webhook or
 the worker is down, but orders can take up to 30 minutes to settle.
 
-## 5. Running more than one app server
+## 5. Email
+
+Customers are emailed automatically, and each email is sent exactly once:
+
+| Email | Sent when |
+| --- | --- |
+| Order confirmation | Payment is confirmed (for Bacs, when it settles) |
+| Shipped, with tracking | Staff click **Mark shipped** in the admin area |
+| Refund | A refund is recorded, from the admin area or the Stripe dashboard |
+| Newsletter confirmation | Someone signs up (double opt-in) |
+| Password reset | A customer asks for one |
+
+All of these go through the queue, so a worker must be running.
+
+**Choosing a provider.** Any of these works; pick one, create an account and
+verify your sending domain:
+
+- **Amazon SES:** works now (the AWS SDK is already installed). Set
+  `MAIL_MAILER=ses` and the `AWS_*` keys.
+- **Postmark:** run `composer require symfony/postmark-mailer symfony/http-client`,
+  then set `MAIL_MAILER=postmark` and `POSTMARK_API_KEY`.
+- **Resend:** run `composer require resend/resend-php`, then set `MAIL_MAILER=resend`
+  and `RESEND_API_KEY`.
+
+Then set `MAIL_FROM_ADDRESS` to an address on your verified domain. Add the
+**SPF, DKIM and DMARC** DNS records your provider gives you, or emails will land
+in spam.
+
+Locally, `MAIL_MAILER=log` writes every email to `storage/logs/laravel.log`.
+
+**Newsletter.** Only `NewsletterSubscriber::mailable()` addresses may be emailed:
+they confirmed the link and haven't unsubscribed. Every newsletter must include
+`$subscriber->unsubscribeUrl()`, and also send it in the `List-Unsubscribe`
+header with `List-Unsubscribe-Post: List-Unsubscribe=One-Click`. Sign-ups from
+before double opt-in was added were never confirmed, so don't email them.
+
+## 6. Admin area
+
+Staff manage the shop at `/admin`:
+
+- **Orders:** to pack & ship, needs review, mark packed or shipped with tracking,
+  refund (optionally restocking returned items), clear review flags.
+- **Products:** details, price, photo upload, colours and sizes, and stock per variant.
+- **Departments.**
+- **Payments:** disputes, and Stripe events that didn't process (with a retry button).
+
+To give someone access, they register a normal account on the shop, then you run:
+
+```bash
+php artisan shop:make-admin jo@example.com            # grant
+php artisan shop:make-admin jo@example.com --revoke   # remove
+```
+
+Admins can refund money, so use strong, unique passwords. Consider turning on
+Filament's multi-factor authentication before launch.
+
+## 7. Running more than one app server
 
 The app keeps no state on its own server, so you can put several identical
 servers behind a load balancer:
@@ -148,7 +207,7 @@ deleted through the app. If you change categories directly in the database, run
 `php artisan cache:forget shop.navigation`. Related-product picks refresh hourly,
 but price changes and deactivated products show at once.
 
-## 6. Stock
+## 8. Stock
 
 Stock is tracked separately for every variant (product × colour × size) in
 `stock_levels`. A variant that has no stock level counts as sold out.
@@ -184,7 +243,7 @@ can be sold.
 It means someone lowered `on_hand` by hand while an order was being paid for, and
 that order needs restocking or a refund.
 
-## 7. Search
+## 9. Search
 
 The search box uses whichever engine `SCOUT_DRIVER` names:
 
@@ -212,16 +271,17 @@ indexing is done on the queue, so an outage never blocks saving a product.
 To rebuild the index from scratch, run `php artisan scout:flush "App\Models\Product"`
 and then the import again.
 
-## 8. Product photos
+## 10. Product photos
 
-Upload the photos to the bucket, e.g. `products/merino-jumper.jpg`. Then set the
-product's `image` column to that path. `App\Support\Media` turns it into a CDN
+Upload photos in the admin area (**Products → edit → Photo**). They're stored on
+the media disk (`SHOP_MEDIA_DISK`) under `products/`. You can also upload them to
+the bucket directly and set the product's `image` column to the path. `App\Support\Media` turns it into a CDN
 URL, and full `https://` URLs are used as they are.
 
 Locally, the same paths work on the `public` disk after running
 `php artisan storage:link` once.
 
-## 9. Monitoring
+## 11. Monitoring
 
 - **Uptime:** monitor `GET /up` every minute. It returns 500 if the database or
   Redis can't be reached, not only when PHP is down.
@@ -235,6 +295,8 @@ Locally, the same paths work on the `public` disk after running
   - *"Stripe event could not be processed after retries"* (error). Check the event's
     `last_error` in `stripe_events`. The reconciliation job will still settle the order.
   - *"Queue backlog"* (warning). Usually no worker is running.
+  - *"Payment disputed"* (critical). Respond with evidence in Stripe before the deadline.
+    It's also listed under **Payments → Disputes** in the admin area.
 - **Heartbeats:** create one monitor per scheduled job, expecting a ping every
   15 minutes and every day respectively. Allow some grace time. A failed
   reconciliation run (for example a Stripe outage) skips its ping, so the monitor
@@ -243,7 +305,35 @@ Locally, the same paths work on the `public` disk after running
 Sentry is configured with `send_default_pii` off, so customer emails and
 addresses are not sent unless you change that.
 
-## 10. Backups and the restore drill
+## 12. Security headers
+
+Every response gets `X-Content-Type-Options`, `X-Frame-Options`,
+`Referrer-Policy` and `Permissions-Policy`. Over HTTPS in production, it also gets
+`Strict-Transport-Security`. The storefront also sends a strict Content Security
+Policy: scripts only from this site, plus a per-request nonce for the one inline
+script.
+
+**If you add a third-party script or widget** (analytics, chat, reviews), add its
+domains to the policy in `app/Http/Middleware/SecurityHeaders.php`, or the browser
+will block it. The admin area doesn't get the CSP, because Livewire needs inline
+scripts.
+
+## 13. Legal details
+
+Set these before launch. The privacy policy, terms and email footers show them,
+and anything missing appears on those pages as "[… to be added]":
+
+`SHOP_LEGAL_NAME`, `SHOP_ADDRESS`, `SHOP_CONTACT_EMAIL`, `SHOP_COMPANY_NUMBER`,
+`SHOP_VAT_NUMBER`, `SHOP_ICO_NUMBER`, `SHOP_HOSTING_PROVIDER`, `SHOP_EMAIL_PROVIDER`.
+
+**VAT:** prices include VAT at `SHOP_VAT_RATE_BPS` (2000 = 20%), and every order
+records the VAT it contains. Check with your accountant: for example, children's
+clothing is zero-rated, which this single-rate setup doesn't handle.
+
+The privacy policy and terms are drafts written for this shop's setup. Have them
+reviewed by a legal professional before launch.
+
+## 14. Backups and the restore drill
 
 The managed database's automatic backups are the primary backup. A backup only
 counts once you have restored it, so run the drill **before launch and then
@@ -271,7 +361,7 @@ monthly**:
 Dumps contain customer data. Store them encrypted and with restricted access.
 `storage/backups/` is git-ignored for local runs.
 
-## 11. Testing against production services
+## 15. Testing against production services
 
 The default `composer test` uses in-memory SQLite. To run the same suite on
 PostgreSQL and Redis:

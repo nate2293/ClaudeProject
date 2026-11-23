@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\NewsletterSubscriber;
 use App\Models\Order;
 use App\Models\StripeEvent;
 use Illuminate\Foundation\Inspiring;
@@ -31,7 +32,7 @@ Schedule::command('queue:monitor', ['default', '--max' => 100])
 // Delete long-cancelled orders and old processed Stripe events (see each model's
 // prunable()). Pending orders and unprocessed events are never pruned.
 $pruneHeartbeat = config('shop.heartbeats.prune_orders');
-Schedule::command('model:prune', ['--model' => [Order::class, StripeEvent::class]])
+Schedule::command('model:prune', ['--model' => [Order::class, StripeEvent::class, NewsletterSubscriber::class]])
     ->daily()
     ->onOneServer()
     ->pingOnSuccessIf(filled($pruneHeartbeat), (string) $pruneHeartbeat);

@@ -32,4 +32,16 @@ interface PaymentGateway
      * @throws PaymentException If the session can't be expired (e.g. it was already completed).
      */
     public function expireCheckout(string $sessionId): void;
+
+    /**
+     * Refund part or all of a payment.
+     *
+     * @param  string  $paymentReference  The payment's provider reference (Stripe: the PaymentIntent ID).
+     * @param  int  $amount  Amount to refund now, in minor units.
+     * @param  string  $idempotencyKey  Same key, same refund: a retried request can't refund twice.
+     * @return int Total refunded on the payment so far, including this refund.
+     *
+     * @throws PaymentException
+     */
+    public function refund(string $paymentReference, int $amount, string $idempotencyKey): int;
 }

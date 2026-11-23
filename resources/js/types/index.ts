@@ -28,7 +28,14 @@ export interface SharedData {
     auth: Auth;
     /** Storefront departments for the main navigation. */
     navigation: NavLink[];
-    shop: { currency: string; freeShippingThreshold: number; standardShippingRate: number; maxQuantity: number; lowStockThreshold: number };
+    shop: {
+        currency: string;
+        freeShippingThreshold: number;
+        standardShippingRate: number;
+        maxQuantity: number;
+        lowStockThreshold: number;
+        business: BusinessDetails;
+    };
     cart: { count: number };
     flash: { success: string | null; error: string | null };
     [key: string]: unknown;
@@ -43,4 +50,16 @@ export interface User {
     created_at: string;
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
+}
+
+/** Legal business details from config/shop.php, shown on policy pages. Null when not yet configured. */
+export interface BusinessDetails {
+    legalName: string;
+    address: string | null;
+    email: string | null;
+    companyNumber: string | null;
+    vatNumber: string | null;
+    icoNumber: string | null;
+    host: string | null;
+    emailProvider: string | null;
 }

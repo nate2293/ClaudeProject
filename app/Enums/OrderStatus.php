@@ -16,6 +16,12 @@ enum OrderStatus: string
     /** The checkout session expired without payment. */
     case Cancelled = 'cancelled';
 
+    /** Paid, then part of the payment was refunded. */
+    case PartiallyRefunded = 'partially_refunded';
+
+    /** Paid, then refunded in full. */
+    case Refunded = 'refunded';
+
     public function label(): string
     {
         return match ($this) {
@@ -24,7 +30,15 @@ enum OrderStatus: string
             self::Paid => 'Paid',
             self::Failed => 'Payment failed',
             self::Cancelled => 'Cancelled',
+            self::PartiallyRefunded => 'Partly refunded',
+            self::Refunded => 'Refunded',
         };
+    }
+
+    /** Statuses of orders that were paid for (whether or not money was later refunded). */
+    public static function paidFor(): array
+    {
+        return [self::Paid, self::PartiallyRefunded, self::Refunded];
     }
 
     /** Statuses whose outcome is still unknown and must be settled with the payment provider. */
