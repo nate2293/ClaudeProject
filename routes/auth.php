@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
+use App\Http\Controllers\Auth\GoogleSignInController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
@@ -11,6 +12,10 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
+    // "Continue with Google". Throttled: each attempt is a round trip to Google.
+    Route::get('auth/google/redirect', [GoogleSignInController::class, 'redirect'])->middleware('throttle:20,1')->name('auth.google.redirect');
+    Route::get('auth/google/callback', [GoogleSignInController::class, 'callback'])->middleware('throttle:20,1')->name('auth.google.callback');
+
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register');
 

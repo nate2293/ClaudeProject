@@ -1,9 +1,8 @@
 import InputError from '@/components/input-error';
-import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
-import { type BreadcrumbItem } from '@/types';
+import { type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler, useRef } from 'react';
 
 import HeadingSmall from '@/components/heading-small';
@@ -11,18 +10,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Password settings',
-        href: '/settings/password',
-    },
-];
-
 export default function Password() {
+    // Customers who signed up with Google have no password yet: they set one instead of changing it.
+    const { hasPassword } = usePage<SharedData>().props.auth;
     const passwordInput = useRef<HTMLInputElement>(null);
     const currentPasswordInput = useRef<HTMLInputElement>(null);
 
-    const { data, setData, errors, put, reset, processing, recentlySuccessful } = useForm({
+    const { data, setData, errors, put, reset, processing, recentlySuccessful, transform } = useForm({
         current_password: '',
         password: '',
         password_confirmation: '',
@@ -31,6 +25,7 @@ export default function Password() {
     const updatePassword: FormEventHandler = (e) => {
         e.preventDefault();
 
+        transform((form) => (hasPassword ? form : { password: form.password, password_confirmation: form.password_confirmation }));
         put(route('password.update'), {
             preserveScroll: true,
             onSuccess: () => reset(),
@@ -49,30 +44,39 @@ export default function Password() {
     };
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Profile settings" />
+        <>
+            <Head title="Password settings" />
 
             <SettingsLayout>
                 <div className="space-y-6">
-                    <HeadingSmall title="Update password" description="Ensure your account is using a long, random password to stay secure" />
+                    <HeadingSmall
+                        title={hasPassword ? 'Update password' : 'Set a password'}
+                        description={
+                            hasPassword
+                                ? 'Ensure your account is using a long, random password to stay secure'
+                                : 'You sign in with Google. Add a password if you’d also like to sign in with your email.'
+                        }
+                    />
 
                     <form onSubmit={updatePassword} className="space-y-6">
-                        <div className="grid gap-2">
-                            <Label htmlFor="current_password">Current password</Label>
+                        {hasPassword && (
+                            <div className="grid gap-2">
+                                <Label htmlFor="current_password">Current password</Label>
 
-                            <Input
-                                id="current_password"
-                                ref={currentPasswordInput}
-                                value={data.current_password}
-                                onChange={(e) => setData('current_password', e.target.value)}
-                                type="password"
-                                className="mt-1 block w-full"
-                                autoComplete="current-password"
-                                placeholder="Current password"
-                            />
+                                <Input
+                                    id="current_password"
+                                    ref={currentPasswordInput}
+                                    value={data.current_password}
+                                    onChange={(e) => setData('current_password', e.target.value)}
+                                    type="password"
+                                    className="mt-1 block w-full"
+                                    autoComplete="current-password"
+                                    placeholder="Current password"
+                                />
 
-                            <InputError message={errors.current_password} />
-                        </div>
+                                <InputError message={errors.current_password} />
+                            </div>
+                        )}
 
                         <div className="grid gap-2">
                             <Label htmlFor="password">New password</Label>
@@ -123,6 +127,6 @@ export default function Password() {
                     </form>
                 </div>
             </SettingsLayout>
-        </AppLayout>
+        </>
     );
 }

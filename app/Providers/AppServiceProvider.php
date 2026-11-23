@@ -3,11 +3,13 @@
 namespace App\Providers;
 
 use App\Cart\Cart;
+use App\Http\Middleware\EnsureSessionIsCurrent;
 use App\Payments\PaymentGateway;
 use App\Payments\Stripe\StripeGateway;
 use App\Search\DatabaseProductSearch;
 use App\Search\ProductSearch;
 use App\Search\ScoutProductSearch;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Foundation\Events\DiagnosingHealth;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Queue\Events\QueueBusy;
@@ -54,6 +56,9 @@ class AppServiceProvider extends ServiceProvider
             DB::select('select 1');
             Cache::get('health-check');
         });
+
+        // Record when this session signed in, so revoking an account's sessions works on any store.
+        Event::listen(Login::class, fn () => session()->put(EnsureSessionIsCurrent::SESSION_KEY, time()));
 
         // Raised by the scheduled `queue:monitor` when a queue backs up.
         Event::listen(QueueBusy::class, fn (QueueBusy $event) => Log::warning('Queue backlog: jobs are waiting longer than expected.', [

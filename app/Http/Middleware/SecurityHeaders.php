@@ -67,7 +67,8 @@ class SecurityHeaders
             "script-src 'self' 'nonce-{$nonce}'{$assets}",
             // React sets inline style attributes (e.g. colour swatches).
             "style-src 'self' 'unsafe-inline'{$assets}",
-            "img-src 'self' data: blob: {$media}",
+            // Google profile photos in the account menu.
+            "img-src 'self' data: blob: https://*.googleusercontent.com {$media}",
             "font-src 'self' data:{$assets}",
             "connect-src 'self'",
             "frame-ancestors 'none'",

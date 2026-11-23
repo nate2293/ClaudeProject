@@ -28,6 +28,7 @@ class SecurityHeadersTest extends TestCase
         preg_match("/'nonce-([A-Za-z0-9]+)'/", $csp, $nonce);
         $this->assertStringNotContainsString('unsafe-eval', $csp);
         $this->assertStringContainsString("frame-ancestors 'none'", $csp);
+        $this->assertStringContainsString('https://*.googleusercontent.com', $csp); // Google profile photos
         $this->assertStringContainsString('form-action \'self\' https://checkout.stripe.com', $csp);
 
         // Every inline/script tag on the page carries the nonce.

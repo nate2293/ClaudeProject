@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Auth\ReturnUrl;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -19,8 +20,10 @@ class RegisteredUserController extends Controller
     /**
      * Show the registration page.
      */
-    public function create(): Response
+    public function create(Request $request): Response
     {
+        ReturnUrl::rememberFrom($request);
+
         return Inertia::render('auth/register');
     }
 
@@ -47,6 +50,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return to_route('dashboard');
+        return redirect()->intended(route('home', absolute: false));
     }
 }

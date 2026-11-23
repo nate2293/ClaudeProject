@@ -46,6 +46,8 @@ class HandleInertiaRequests extends Middleware
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $request->user(),
+                // Google-only customers have no password: settings offer "Set a password" instead.
+                'hasPassword' => $request->user()?->hasPassword() ?? false,
             ],
             'navigation' => fn () => array_map(fn (array $category) => [
                 'label' => $category['name'],

@@ -3,6 +3,8 @@ import type { NavLink } from './shop';
 
 export interface Auth {
     user: User;
+    /** False for customers who only sign in with Google. */
+    hasPassword: boolean;
 }
 
 export interface BreadcrumbItem {
@@ -46,6 +48,8 @@ export interface User {
     name: string;
     email: string;
     avatar?: string;
+    /** Google profile photo, for customers who signed in with Google. */
+    avatar_url?: string | null;
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;

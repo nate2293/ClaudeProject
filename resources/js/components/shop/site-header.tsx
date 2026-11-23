@@ -3,7 +3,8 @@ import { primaryNav } from '@/data/storefront';
 import { cn, isCurrentUrl } from '@/lib/utils';
 import { type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { ShoppingBag, User } from 'lucide-react';
+import { ShoppingBag } from 'lucide-react';
+import { AccountMenu } from './account-menu';
 import { Container } from './container';
 import { MobileNav } from './mobile-nav';
 import { SearchDialog } from './search-dialog';
@@ -11,15 +12,14 @@ import { ShopLogo } from './shop-logo';
 
 export function SiteHeader() {
     const { props, url } = usePage<SharedData>();
-    const { auth, navigation, cart } = props;
+    const { navigation, cart } = props;
     const links = primaryNav(navigation);
-    const account = auth.user ? { label: 'My account', href: route('dashboard') } : { label: 'Sign in', href: route('login') };
 
     return (
         <header className="bg-background/85 supports-[backdrop-filter]:bg-background/70 sticky top-0 z-40 backdrop-blur">
             <Container className="flex h-16 items-center gap-4">
                 <div className="flex flex-1 items-center gap-2 lg:flex-none">
-                    <MobileNav links={links} account={account} />
+                    <MobileNav links={links} />
                     <ShopLogo />
                 </div>
 
@@ -50,11 +50,9 @@ export function SiteHeader() {
                 <div className="flex items-center justify-end gap-1">
                     <SearchDialog />
 
-                    <Button variant="ghost" size="icon" asChild className="hidden sm:inline-flex">
-                        <Link href={account.href} aria-label={account.label}>
-                            <User className="size-5!" />
-                        </Link>
-                    </Button>
+                    <div className="hidden sm:block">
+                        <AccountMenu />
+                    </div>
 
                     <Button variant="ghost" size="icon" asChild className="relative">
                         <Link href={route('cart.index')} aria-label={`Shopping bag, ${cart.count} ${cart.count === 1 ? 'item' : 'items'}`}>

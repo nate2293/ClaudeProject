@@ -42,6 +42,8 @@ class User extends Authenticatable implements FilamentUser
         'password',
         'remember_token',
         'is_admin',
+        'google_id',
+        'sessions_revoked_at',
     ];
 
     /**
@@ -55,7 +57,14 @@ class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_admin' => 'boolean',
+            'sessions_revoked_at' => 'datetime',
         ];
+    }
+
+    /** Customers who only sign in with Google have no password. */
+    public function hasPassword(): bool
+    {
+        return filled($this->password);
     }
 
     /** Only staff can open the admin area. */

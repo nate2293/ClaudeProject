@@ -6,19 +6,14 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
+/** The starter kit's dashboard was replaced by the header's account menu. */
 class DashboardTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guests_are_redirected_to_the_login_page()
+    public function test_old_dashboard_links_go_back_to_the_shop()
     {
-        $this->get('/dashboard')->assertRedirect('/login');
-    }
-
-    public function test_authenticated_users_can_visit_the_dashboard()
-    {
-        $this->actingAs($user = User::factory()->create());
-
-        $this->get('/dashboard')->assertOk();
+        $this->get('/dashboard')->assertRedirect('/');
+        $this->actingAs(User::factory()->create())->get('/dashboard')->assertRedirect('/');
     }
 }

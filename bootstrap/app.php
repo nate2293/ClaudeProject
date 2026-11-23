@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureSessionIsCurrent;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\SecurityHeaders;
 use Illuminate\Foundation\Application;
@@ -22,7 +23,11 @@ return Application::configure(basePath: dirname(__DIR__))
         // Every response, including the admin area and errors.
         $middleware->append(SecurityHeaders::class);
 
+        // Signed-in visitors opening /login or /register go back to the shop.
+        $middleware->redirectUsersTo('/');
+
         $middleware->web(append: [
+            EnsureSessionIsCurrent::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
         ]);

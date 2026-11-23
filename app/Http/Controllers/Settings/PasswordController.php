@@ -29,8 +29,9 @@ class PasswordController extends Controller
      */
     public function update(Request $request): RedirectResponse
     {
+        // Google-only customers are setting their first password, so there's no current one to check.
         $validated = $request->validate([
-            'current_password' => ['required', 'current_password'],
+            'current_password' => $request->user()->hasPassword() ? ['required', 'current_password'] : ['prohibited'],
             'password' => ['required', Password::defaults(), 'confirmed'],
         ]);
 

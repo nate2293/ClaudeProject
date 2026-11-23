@@ -45,11 +45,16 @@ class ProfileController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        $request->validate([
-            'password' => ['required', 'current_password'],
-        ]);
-
         $user = $request->user();
+
+        // Confirm with the password, or for Google-only customers by typing their email.
+        $request->validate($user->hasPassword()
+            ? ['password' => ['required', 'current_password']]
+            : ['email' => ['required', 'string', function (string $attribute, mixed $value, \Closure $fail) use ($user) {
+                if (mb_strtolower(trim((string) $value)) !== mb_strtolower($user->email)) {
+                    $fail('That doesn’t match your account’s email.');
+                }
+            }]]);
 
         Auth::logout();
 

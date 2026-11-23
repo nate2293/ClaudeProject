@@ -152,7 +152,47 @@ they confirmed the link and haven't unsubscribed. Every newsletter must include
 header with `List-Unsubscribe-Post: List-Unsubscribe=One-Click`. Sign-ups from
 before double opt-in was added were never confirmed, so don't email them.
 
-## 6. Admin area
+## 6. Sign in with Google
+
+Customers can choose **Continue with Google** from the account icon in the header,
+which is on every page. They come back signed in to the page they started on,
+with their bag intact. Email and password sign-in still works alongside it.
+
+**Setting up Google (one time):**
+
+1. In [Google Cloud Console](https://console.cloud.google.com/), create a project
+   (or pick one) for the shop.
+2. Set up the **OAuth consent screen** (Google Auth Platform → Branding):
+   - User type **External**.
+   - Add the app name, support email and logo.
+   - Link the privacy policy (`/privacy`) and terms (`/terms`).
+   - Add your domain as an authorised domain.
+3. **Scopes:** keep only the defaults (`openid`, `email`, `profile`). These need
+   no Google review.
+4. Under **Clients**, create an OAuth client of type **Web application**. Add these
+   authorised redirect URIs:
+   - `http://127.0.0.1:8000/auth/google/callback` (local)
+   - `https://<your domain>/auth/google/callback` (live)
+5. Put the client ID and secret in `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`.
+6. Under **Audience**, switch the publishing status from **Testing** to
+   **In production**. Until you do, only the test users you list can sign in.
+
+**How accounts are matched:**
+
+- **By Google account ID first**, so a changed Gmail address still finds the
+  right account.
+- **Then by email.** Google's email must be verified by Google.
+  - If that email belongs to a password account whose email was never verified,
+    the old password is removed and its sessions are signed out. This stops
+    "pre-registered" accounts from keeping access. The customer can set a new
+    password in Account settings.
+- **Customers who only use Google:**
+  - they have no password, and **Account settings → Password** lets them set one;
+  - they confirm deleting their account by typing their email.
+
+If the Google keys aren't set, the button tells shoppers to use email instead.
+
+## 7. Admin area
 
 Staff manage the shop at `/admin`:
 
@@ -172,7 +212,7 @@ php artisan shop:make-admin jo@example.com --revoke   # remove
 Admins can refund money, so use strong, unique passwords. Consider turning on
 Filament's multi-factor authentication before launch.
 
-## 7. Running more than one app server
+## 8. Running more than one app server
 
 The app keeps no state on its own server, so you can put several identical
 servers behind a load balancer:
@@ -208,7 +248,7 @@ deleted through the app. If you change categories directly in the database, run
 `php artisan cache:forget shop.navigation`. Related-product picks refresh hourly,
 but price changes and deactivated products show at once.
 
-## 8. Stock
+## 9. Stock
 
 Stock is tracked separately for every variant (product × colour × size) in
 `stock_levels`. A variant that has no stock level counts as sold out.
@@ -244,7 +284,7 @@ can be sold.
 It means someone lowered `on_hand` by hand while an order was being paid for, and
 that order needs restocking or a refund.
 
-## 9. Search
+## 10. Search
 
 The search box uses whichever engine `SCOUT_DRIVER` names:
 
@@ -272,7 +312,7 @@ indexing is done on the queue, so an outage never blocks saving a product.
 To rebuild the index from scratch, run `php artisan scout:flush "App\Models\Product"`
 and then the import again.
 
-## 10. Product photos
+## 11. Product photos
 
 Upload photos in the admin area (**Products → edit → Photo**). They're stored on
 the media disk (`SHOP_MEDIA_DISK`) under `products/`. You can also upload them to
@@ -282,7 +322,7 @@ URL, and full `https://` URLs are used as they are.
 Locally, the same paths work on the `public` disk after running
 `php artisan storage:link` once.
 
-## 11. Monitoring
+## 12. Monitoring
 
 - **Uptime:** monitor `GET /up` every minute. It returns 500 if the database or
   Redis can't be reached, not only when PHP is down.
@@ -306,7 +346,7 @@ Locally, the same paths work on the `public` disk after running
 Sentry is configured with `send_default_pii` off, so customer emails and
 addresses are not sent unless you change that.
 
-## 12. Security headers
+## 13. Security headers
 
 Every response gets `X-Content-Type-Options`, `X-Frame-Options`,
 `Referrer-Policy` and `Permissions-Policy`. Over HTTPS in production, it also gets
@@ -319,7 +359,7 @@ domains to the policy in `app/Http/Middleware/SecurityHeaders.php`, or the brows
 will block it. The admin area doesn't get the CSP, because Livewire needs inline
 scripts.
 
-## 13. Legal details
+## 14. Legal details
 
 Set these before launch. The privacy policy, terms and email footers show them,
 and anything missing appears on those pages as "[… to be added]":
@@ -334,7 +374,7 @@ clothing is zero-rated, which this single-rate setup doesn't handle.
 The privacy policy and terms are drafts written for this shop's setup. Have them
 reviewed by a legal professional before launch.
 
-## 14. Backups and the restore drill
+## 15. Backups and the restore drill
 
 The managed database's automatic backups are the primary backup. A backup only
 counts once you have restored it, so run the drill **before launch and then
@@ -362,7 +402,7 @@ monthly**:
 Dumps contain customer data. Store them encrypted and with restricted access.
 `storage/backups/` is git-ignored for local runs.
 
-## 15. Testing against production services
+## 16. Testing against production services
 
 The default `composer test` uses in-memory SQLite. To run the same suite on
 PostgreSQL and Redis:

@@ -1,4 +1,5 @@
-import { useForm } from '@inertiajs/react';
+import { type SharedData } from '@/types';
+import { useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler, useRef } from 'react';
 
 // Components...
@@ -13,7 +14,10 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 
 export default function DeleteUser() {
     const passwordInput = useRef<HTMLInputElement>(null);
-    const { data, setData, delete: destroy, processing, reset, errors, clearErrors } = useForm({ password: '' });
+    // Google-only customers have no password, so they confirm by typing their email instead.
+    const { hasPassword } = usePage<SharedData>().props.auth;
+    const { data, setData, delete: destroy, processing, reset, errors, clearErrors, transform } = useForm({ password: '', email: '' });
+    transform((form) => (hasPassword ? { password: form.password } : { email: form.email }));
 
     const deleteUser: FormEventHandler = (e) => {
         e.preventDefault();
@@ -47,27 +51,40 @@ export default function DeleteUser() {
                     <DialogContent>
                         <DialogTitle>Are you sure you want to delete your account?</DialogTitle>
                         <DialogDescription>
-                            Once your account is deleted, all of its resources and data will also be permanently deleted. Please enter your password
-                            to confirm you would like to permanently delete your account.
+                            Once your account is deleted, all of its resources and data will also be permanently deleted. Please enter your{' '}
+                            {hasPassword ? 'password' : 'email address'} to confirm you would like to permanently delete your account.
                         </DialogDescription>
                         <form className="space-y-6" onSubmit={deleteUser}>
                             <div className="grid gap-2">
-                                <Label htmlFor="password" className="sr-only">
-                                    Password
+                                <Label htmlFor="delete-confirmation" className="sr-only">
+                                    {hasPassword ? 'Password' : 'Email address'}
                                 </Label>
 
-                                <Input
-                                    id="password"
-                                    type="password"
-                                    name="password"
-                                    ref={passwordInput}
-                                    value={data.password}
-                                    onChange={(e) => setData('password', e.target.value)}
-                                    placeholder="Password"
-                                    autoComplete="current-password"
-                                />
+                                {hasPassword ? (
+                                    <Input
+                                        id="delete-confirmation"
+                                        type="password"
+                                        name="password"
+                                        ref={passwordInput}
+                                        value={data.password}
+                                        onChange={(e) => setData('password', e.target.value)}
+                                        placeholder="Password"
+                                        autoComplete="current-password"
+                                    />
+                                ) : (
+                                    <Input
+                                        id="delete-confirmation"
+                                        type="email"
+                                        name="email"
+                                        ref={passwordInput}
+                                        value={data.email}
+                                        onChange={(e) => setData('email', e.target.value)}
+                                        placeholder="Your email address"
+                                        autoComplete="off"
+                                    />
+                                )}
 
-                                <InputError message={errors.password} />
+                                <InputError message={errors.password ?? errors.email} />
                             </div>
 
                             <DialogFooter>

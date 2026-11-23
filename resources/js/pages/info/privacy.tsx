@@ -40,7 +40,9 @@ export default function Privacy() {
                                 number; we receive a payment reference and the outcome.
                             </li>
                             <li>
-                                <strong>If you create an account:</strong> your name, email and a securely hashed password, so you can sign in.
+                                <strong>If you create an account:</strong> your name, email and a securely hashed password, so you can sign in. If you
+                                choose <strong>Continue with Google</strong>, Google shares your name, email address and profile photo with us; we
+                                don’t receive your Google password or anything else from your Google account.
                             </li>
                             <li>
                                 <strong>Newsletter:</strong> your email, only after you confirm the sign-up link we send you (your consent). Every
@@ -74,6 +76,10 @@ export default function Privacy() {
                                 <li>
                                     <strong>Sentry</strong> receives error reports so we can fix faults. These are set up not to include your name,
                                     email or address.
+                                </li>
+                                <li>
+                                    <strong>Google</strong> confirms your identity if you choose to sign in with Google; see{' '}
+                                    <a href="https://policies.google.com/privacy">Google’s privacy policy</a>.
                                 </li>
                                 <li>
                                     <strong>Delivery companies</strong> receive your name and delivery address to deliver your parcel.

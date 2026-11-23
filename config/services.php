@@ -24,6 +24,14 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    // "Continue with Google" (Laravel Socialite). Create the OAuth client in Google
+    // Cloud Console; the redirect URI is APP_URL + /auth/google/callback.
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => '/auth/google/callback',
+    ],
+
     'resend' => [
         'key' => env('RESEND_KEY'),
     ],
