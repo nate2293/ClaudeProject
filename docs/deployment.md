@@ -129,19 +129,20 @@ Customers are emailed automatically, and each email is sent exactly once:
 
 All of these go through the queue, so a worker must be running.
 
-**Choosing a provider.** Any of these works; pick one, create an account and
-verify your sending domain:
+**Provider: Resend** (installed). To set it up:
 
-- **Amazon SES:** works now (the AWS SDK is already installed). Set
-  `MAIL_MAILER=ses` and the `AWS_*` keys.
-- **Postmark:** run `composer require symfony/postmark-mailer symfony/http-client`,
-  then set `MAIL_MAILER=postmark` and `POSTMARK_API_KEY`.
-- **Resend:** run `composer require resend/resend-php`, then set `MAIL_MAILER=resend`
-  and `RESEND_API_KEY`.
+1. Create an account at resend.com, then under **Domains** add your shop's domain.
+   A subdomain such as `mail.yourdomain.co.uk` keeps email reputation separate.
+2. Add the DNS records Resend shows (DKIM and SPF) at your domain registrar, then
+   wait for the domain to show **Verified**.
+3. Add a DMARC record (TXT on `_dmarc`, starting with `v=DMARC1; p=none;`), then
+   tighten it to `p=quarantine` once mail is flowing.
+4. Create an API key with **Sending access** for that domain only, and set
+   `RESEND_KEY`, `MAIL_MAILER=resend` and `MAIL_FROM_ADDRESS`
+   (e.g. `orders@yourdomain.co.uk`).
+5. Check it with `php artisan shop:test-email you@example.com`.
 
-Then set `MAIL_FROM_ADDRESS` to an address on your verified domain. Add the
-**SPF, DKIM and DMARC** DNS records your provider gives you, or emails will land
-in spam.
+To switch provider later, Amazon SES (`MAIL_MAILER=ses`) and Postmark are also supported by Laravel.
 
 Locally, `MAIL_MAILER=log` writes every email to `storage/logs/laravel.log`.
 
