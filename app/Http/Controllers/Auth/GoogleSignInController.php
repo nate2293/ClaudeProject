@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Actions\Auth\SignInWithGoogle;
 use App\Auth\ReturnUrl;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,13 +15,18 @@ use Throwable;
 
 /**
  * "Continue with Google": sends the shopper to Google, and back to the shop page
- * they started on, signed in, with their bag intact.
+ * they started on, signed in, with their bag intact. A customer who is already
+ * signed in uses the same flow to connect Google to their account.
  */
 class GoogleSignInController extends Controller
 {
     public function redirect(Request $request): SymfonyRedirect
     {
-        ReturnUrl::rememberFrom($request);
+        if ($request->user()) {
+            $request->session()->put('url.intended', route('account.social'));
+        } else {
+            ReturnUrl::rememberFrom($request);
+        }
 
         if (blank(config('services.google.client_id')) || blank(config('services.google.client_secret'))) {
             report(new \RuntimeException('Google sign-in clicked but GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET are not set.'));
@@ -36,6 +42,10 @@ class GoogleSignInController extends Controller
     {
         if ($request->filled('error')) { // e.g. access_denied: the shopper pressed Cancel.
             return $this->backToShop($request, 'Google sign-in was cancelled.');
+        }
+
+        if ($request->user()) {
+            return $this->connect($request);
         }
 
         try {
@@ -55,6 +65,28 @@ class GoogleSignInController extends Controller
         return $signIn->removedUnverifiedPassword
             ? $redirect->with('success', 'You’re signed in with Google. For your security we removed the old password on this account; you can set a new one in Account settings.')
             : $redirect->with('success', "Signed in as {$user->name}.");
+    }
+
+    /** Connect the Google account just chosen to the signed-in customer. */
+    private function connect(Request $request): RedirectResponse
+    {
+        try {
+            $google = Socialite::driver('google')->user();
+        } catch (Throwable $e) {
+            report($e);
+
+            return $this->backToShop($request, 'We couldn’t connect Google. Please try again.');
+        }
+
+        $user = $request->user();
+
+        if (User::where('google_id', $google->getId())->whereKeyNot($user->id)->exists()) {
+            return $this->backToShop($request, 'That Google account is already connected to a different account here.');
+        }
+
+        $user->forceFill(['google_id' => $google->getId(), 'avatar_url' => $google->getAvatar() ?: $user->avatar_url])->save();
+
+        return redirect()->intended(route('account.social', absolute: false))->with('success', 'Google is connected. You can now sign in with it.');
     }
 
     private function backToShop(Request $request, string $message): RedirectResponse

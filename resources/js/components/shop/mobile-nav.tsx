@@ -44,8 +44,13 @@ export function MobileNav({ links }: MobileNavProps) {
                     <div className="flex flex-col gap-3 text-sm font-medium">
                         <p className="text-muted-foreground truncate font-normal">Signed in as {auth.user.name}</p>
                         <SheetClose asChild>
+                            <Link href={route('account.orders')} className="hover:text-brand">
+                                My orders
+                            </Link>
+                        </SheetClose>
+                        <SheetClose asChild>
                             <Link href={route('profile.edit')} className="hover:text-brand">
-                                Account settings
+                                My account
                             </Link>
                         </SheetClose>
                         <Link href={route('logout')} method="post" as="button" className="hover:text-brand text-left">

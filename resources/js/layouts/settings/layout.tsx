@@ -1,66 +1,13 @@
-import Heading from '@/components/heading';
-import { Container } from '@/components/shop/container';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
-import ShopLayout from '@/layouts/shop-layout';
-import { cn } from '@/lib/utils';
-import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
+import AccountLayout, { AccountPanel } from '@/layouts/account-layout';
+import { type ReactNode } from 'react';
 
-const sidebarNavItems: NavItem[] = [
-    {
-        title: 'Profile',
-        url: '/settings/profile',
-        icon: null,
-    },
-    {
-        title: 'Password',
-        url: '/settings/password',
-        icon: null,
-    },
-    {
-        title: 'Appearance',
-        url: '/settings/appearance',
-        icon: null,
-    },
-];
-
-export default function SettingsLayout({ children }: { children: React.ReactNode }) {
-    const currentPath = window.location.pathname;
-
+/** My details, Password and Appearance: account sections with a single form panel. */
+export default function SettingsLayout({ children }: { children: ReactNode }) {
     return (
-        <ShopLayout>
-            <Container className="py-10 sm:py-14">
-                <Heading title="Account settings" description="Your details, password and display preferences" />
-
-                <div className="flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12">
-                    <aside className="w-full max-w-xl lg:w-48">
-                        <nav className="flex flex-col space-y-1 space-x-0">
-                            {sidebarNavItems.map((item) => (
-                                <Button
-                                    key={item.url}
-                                    size="sm"
-                                    variant="ghost"
-                                    asChild
-                                    className={cn('w-full justify-start', {
-                                        'bg-muted': currentPath === item.url,
-                                    })}
-                                >
-                                    <Link href={item.url} prefetch>
-                                        {item.title}
-                                    </Link>
-                                </Button>
-                            ))}
-                        </nav>
-                    </aside>
-
-                    <Separator className="my-6 md:hidden" />
-
-                    <div className="flex-1 md:max-w-2xl">
-                        <section className="max-w-xl space-y-12">{children}</section>
-                    </div>
-                </div>
-            </Container>
-        </ShopLayout>
+        <AccountLayout>
+            <AccountPanel className="p-5 sm:p-6">
+                <div className="max-w-xl space-y-12">{children}</div>
+            </AccountPanel>
+        </AccountLayout>
     );
 }

@@ -11,11 +11,14 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('guest')->group(function () {
-    // "Continue with Google". Throttled: each attempt is a round trip to Google.
-    Route::get('auth/google/redirect', [GoogleSignInController::class, 'redirect'])->middleware('throttle:20,1')->name('auth.google.redirect');
-    Route::get('auth/google/callback', [GoogleSignInController::class, 'callback'])->middleware('throttle:20,1')->name('auth.google.callback');
+// "Continue with Google": signs guests in, or connects Google to a signed-in account.
+// Throttled: each attempt is a round trip to Google.
+Route::middleware('throttle:20,1')->group(function () {
+    Route::get('auth/google/redirect', [GoogleSignInController::class, 'redirect'])->name('auth.google.redirect');
+    Route::get('auth/google/callback', [GoogleSignInController::class, 'callback'])->name('auth.google.callback');
+});
 
+Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register');
 

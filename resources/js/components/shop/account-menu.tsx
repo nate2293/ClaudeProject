@@ -12,7 +12,7 @@ import {
 import { useInitials } from '@/hooks/use-initials';
 import { type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { LogOut, Settings, User } from 'lucide-react';
+import { LogOut, Package, User, UserRound } from 'lucide-react';
 import { GoogleButton } from './google-button';
 
 /** The header's account control: a sign-in dialog for guests, an account menu once signed in. */
@@ -33,7 +33,7 @@ function SignedInMenu() {
                 <Button variant="ghost" size="icon" aria-label={`Account menu for ${user.name}`} className="rounded-full">
                     <Avatar className="size-8">
                         {user.avatar_url && <AvatarImage src={user.avatar_url} alt="" referrerPolicy="no-referrer" />}
-                        <AvatarFallback className="bg-secondary text-xs font-semibold">{getInitials(user.name)}</AvatarFallback>
+                        <AvatarFallback className="bg-primary text-primary-foreground text-xs font-semibold">{getInitials(user.name)}</AvatarFallback>
                     </Avatar>
                 </Button>
             </DropdownMenuTrigger>
@@ -44,9 +44,15 @@ function SignedInMenu() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
+                    <Link href={route('account.orders')} className="cursor-pointer">
+                        <Package />
+                        My orders
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
                     <Link href={route('profile.edit')} className="cursor-pointer">
-                        <Settings />
-                        Account settings
+                        <UserRound />
+                        My account
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>

@@ -153,3 +153,33 @@ export interface Testimonial {
     location: string;
     rating: number;
 }
+
+/** An order as shown in the customer's account (App\Http\Resources\AccountOrderResource). */
+export interface AccountOrder {
+    reference: string;
+    placedAt: string;
+    shippedAt: string | null;
+    returnBy: string | null;
+    progress: { step: number; steps: number; title: string; detail: string; tone: 'active' | 'done' | 'waiting' | 'muted' };
+    currency: string;
+    subtotal: number;
+    shipping: number;
+    total: number;
+    vat: { rate: string; amount: number } | null;
+    refunded: number;
+    tracking: { carrier: string | null; number: string | null; url: string | null } | null;
+    /** Only on the order page. */
+    deliverTo?: { name: string | null; lines: string[] };
+    href: string;
+    items: {
+        id: number;
+        name: string;
+        colour: string;
+        size: string;
+        quantity: number;
+        total: number;
+        image: string | null;
+        swatch: string;
+        href: string | null;
+    }[];
+}

@@ -102,6 +102,30 @@ class Order extends Model
         return $this->hasMany(PaymentDispute::class);
     }
 
+    /**
+     * Orders that belong to a customer: placed while signed in, or as a guest
+     * with the same email once that email has been verified (e.g. via Google),
+     * so nobody can see orders just by registering someone else's address.
+     *
+     * @param  Builder<self>  $query
+     */
+    public function scopeForCustomer(Builder $query, User $user): void
+    {
+        $query->where(function (Builder $q) use ($user) {
+            $q->where('user_id', $user->id);
+
+            if ($user->email_verified_at) {
+                $q->orWhere(fn (Builder $guest) => $guest->whereNull('user_id')->where('email', $user->email));
+            }
+        });
+    }
+
+    /** Orders a customer should see in their history: paid for, or payment on its way. @param Builder<self> $query */
+    public function scopeVisibleToCustomer(Builder $query): void
+    {
+        $query->whereIn('status', [OrderStatus::Processing, ...OrderStatus::paidFor()]);
+    }
+
     public function isPaid(): bool
     {
         return $this->status === OrderStatus::Paid;
