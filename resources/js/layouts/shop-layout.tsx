@@ -1,0 +1,43 @@
+import { AnnouncementBar } from '@/components/shop/announcement-bar';
+import { FlashMessage } from '@/components/shop/flash-message';
+import { SiteFooter } from '@/components/shop/site-footer';
+import { SiteHeader } from '@/components/shop/site-header';
+import { announcement } from '@/data/storefront';
+import { Head } from '@inertiajs/react';
+import { type ReactNode } from 'react';
+
+interface ShopLayoutProps {
+    title?: string;
+    children: ReactNode;
+}
+
+/**
+ * Shared shell for every public storefront page: announcement bar,
+ * sticky header, main content area and footer.
+ */
+export default function ShopLayout({ title, children }: ShopLayoutProps) {
+    return (
+        <>
+            {title && <Head title={title} />}
+
+            <div className="flex min-h-screen flex-col">
+                <a
+                    href="#main"
+                    className="bg-foreground text-background sr-only z-50 rounded-md px-4 py-2 focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
+                >
+                    Skip to content
+                </a>
+
+                <AnnouncementBar message={announcement} />
+                <SiteHeader />
+                <FlashMessage />
+
+                <main id="main" className="flex-1">
+                    {children}
+                </main>
+
+                <SiteFooter />
+            </div>
+        </>
+    );
+}

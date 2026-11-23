@@ -1,0 +1,238 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/archivo/wdth.css';
+
+@plugin 'tailwindcss-animate';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+    --font-sans: 'Archivo Variable', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+
+    --radius-lg: var(--radius);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-sm: calc(var(--radius) - 4px);
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+
+    --color-brand: var(--brand);
+    --color-brand-foreground: var(--brand-foreground);
+
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+
+    --color-sidebar: var(--sidebar-background);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+/*
+  Headings use Archivo at its widest setting, like a stencil on a cloth bale;
+  body text uses the same family at normal width.
+*/
+@utility font-display {
+    font-family: var(--font-sans);
+    font-stretch: 125%;
+    font-weight: 620;
+    letter-spacing: -0.015em;
+}
+
+/* Pinked (zigzag) top edge, as on a cut cloth swatch. */
+@utility pinked-top {
+    --pink: 10px;
+    mask:
+        conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / calc(var(--pink) * 2) var(--pink) repeat-x,
+        linear-gradient(#000 0 0) 0 var(--pink) / 100% calc(100% - var(--pink)) no-repeat;
+}
+
+/* A selvedge edge: the cloth's border line with a single red identification thread. */
+@utility selvedge {
+    height: 4px;
+    background: linear-gradient(to bottom, var(--border) 0 1px, transparent 1px 2px, var(--brand) 2px 3px, transparent 3px);
+}
+
+/* Fine plain-weave texture laid over a solid cloth colour. */
+@utility weave {
+    background-image:
+        repeating-linear-gradient(0deg, rgb(255 255 255 / 0.07) 0 1px, transparent 1px 3px),
+        repeating-linear-gradient(90deg, rgb(0 0 0 / 0.06) 0 1px, transparent 1px 3px);
+}
+
+/* The one orchestrated motion on the site: swatches fanning out of the book on load. */
+@keyframes swatch-in {
+    from {
+        opacity: 0;
+        transform: translateY(32px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+}
+
+:root {
+    --background: #fafaf8;
+    --foreground: #1f2b47;
+    --card: #fafaf8;
+    --card-foreground: #1f2b47;
+    --popover: #ffffff;
+    --popover-foreground: #1f2b47;
+    --primary: #1f2b47;
+    --primary-foreground: #fafaf8;
+    --secondary: #e3e7ee;
+    --secondary-foreground: #1f2b47;
+    --muted: #eef0f4;
+    --muted-foreground: #56637f;
+    --accent: #e3e7ee;
+    --accent-foreground: #1f2b47;
+    --destructive: hsl(0, 84.2%, 60.2%);
+    --destructive-foreground: hsl(0, 0%, 98%);
+    --border: #d5dbe5;
+    --input: #c3cad8;
+    --ring: #1f2b47;
+    --chart-1: hsl(12, 76%, 61%);
+    --chart-2: hsl(173, 58%, 39%);
+    --chart-3: hsl(197, 37%, 24%);
+    --chart-4: hsl(43, 74%, 66%);
+    --chart-5: hsl(27, 87%, 67%);
+    --brand: #b0172f;
+    --brand-foreground: #fafaf8;
+    --radius: 0.25rem;
+    --sidebar-background: hsl(0, 0%, 98%);
+    --sidebar-foreground: hsl(240, 5.3%, 30%);
+    --sidebar-primary: hsl(0, 0%, 10%);
+    --sidebar-primary-foreground: hsl(0, 0%, 98%);
+    --sidebar-accent: hsl(0, 0%, 94%);
+    --sidebar-accent-foreground: hsl(0, 0%, 30%);
+    --sidebar-border: hsl(0, 0%, 91%);
+    --sidebar-ring: hsl(217.2, 91.2%, 59.8%);
+}
+
+.dark {
+    --background: #141c2e;
+    --foreground: #e6e9f0;
+    --card: #141c2e;
+    --card-foreground: #e6e9f0;
+    --popover: #1a2338;
+    --popover-foreground: #e6e9f0;
+    --primary: #e6e9f0;
+    --primary-foreground: #141c2e;
+    --secondary: #232d45;
+    --secondary-foreground: #e6e9f0;
+    --muted: #1b2438;
+    --muted-foreground: #9aa5bd;
+    --accent: #232d45;
+    --accent-foreground: #e6e9f0;
+    --destructive: hsl(0, 84%, 60%);
+    --destructive-foreground: hsl(0, 0%, 98%);
+    --border: #2a3550;
+    --input: #34405e;
+    --ring: #c9d0de;
+    --brand: #f0707f;
+    --brand-foreground: #141c2e;
+    --chart-1: hsl(220, 70%, 50%);
+    --chart-2: hsl(160, 60%, 45%);
+    --chart-3: hsl(30, 80%, 55%);
+    --chart-4: hsl(280, 65%, 60%);
+    --chart-5: hsl(340, 75%, 55%);
+    --sidebar-background: hsl(0, 0%, 7%);
+    --sidebar-foreground: hsl(0, 0%, 80%);
+    --sidebar-primary: hsl(360, 100%, 100%);
+    --sidebar-primary-foreground: hsl(0, 0%, 100%);
+    --sidebar-accent: hsl(0, 0%, 15.9%);
+    --sidebar-accent-foreground: hsl(240, 4.8%, 95.9%);
+    --sidebar-border: hsl(0, 0%, 15.9%);
+    --sidebar-ring: hsl(217.2, 91.2%, 59.8%);
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        html {
+            scroll-behavior: smooth;
+        }
+    }
+
+    body {
+        @apply bg-background text-foreground;
+        line-height: 1.6;
+        font-feature-settings: 'kern', 'liga';
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--ring);
+        outline-offset: 2px;
+    }
+}
+
+/* A diagonal selvedge-red line across a sold-out colour swatch. */
+@utility sold-out-strike {
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            to top right,
+            transparent calc(50% - 1px),
+            var(--color-brand) calc(50% - 1px),
+            var(--color-brand) calc(50% + 1px),
+            transparent calc(50% + 1px)
+        );
+    }
+}
