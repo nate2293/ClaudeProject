@@ -113,25 +113,6 @@ class Order extends Model
         return in_array($this->status, OrderStatus::paidFor(), true);
     }
 
-    /** Amount that can still be refunded, in minor units. */
-    public function refundableAmount(): int
-    {
-        return max(0, ($this->amount_paid ?? $this->total) - $this->amount_refunded);
-    }
-
-    /** Orders that have been paid for and still need packing or shipping. @param Builder<self> $query */
-    public function scopeToFulfil(Builder $query): void
-    {
-        $query->whereIn('status', [OrderStatus::Paid, OrderStatus::PartiallyRefunded])
-            ->where('fulfilment_status', '!=', FulfilmentStatus::Shipped);
-    }
-
-    /** @param Builder<self> $query */
-    public function scopeNeedsReview(Builder $query): void
-    {
-        $query->whereNotNull('review_reason');
-    }
-
     /**
      * Change the order's attributes only if it is still in one of the `$from`
      * statuses, in a single conditional UPDATE. Two concurrent callers (e.g. the

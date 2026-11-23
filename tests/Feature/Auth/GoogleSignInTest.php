@@ -61,7 +61,6 @@ class GoogleSignInTest extends TestCase
         $this->assertSame(['1001', 'jane@gmail.com', 'Jane Doe'], [$user->google_id, $user->email, $user->name]);
         $this->assertNotNull($user->email_verified_at);
         $this->assertFalse($user->hasPassword());
-        $this->assertFalse($user->is_admin);
         $this->assertSame('https://lh3.googleusercontent.com/a/photo', $user->avatar_url);
     }
 
@@ -153,7 +152,7 @@ class GoogleSignInTest extends TestCase
 
     public function test_return_addresses_off_this_site_are_ignored()
     {
-        foreach (['https://evil.example/', '//evil.example/', '/\\evil.example', 'javascript:alert(1)', '/login', '/admin'] as $return) {
+        foreach (['https://evil.example/', '//evil.example/', '/\\evil.example', 'javascript:alert(1)', '/login'] as $return) {
             $this->flushSession();
             $this->get(route('auth.google.redirect', ['return' => $return]));
             $this->assertNull(session('url.intended'), "Accepted {$return}");

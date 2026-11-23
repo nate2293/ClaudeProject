@@ -19,12 +19,6 @@ class OrderItem extends Model
         ];
     }
 
-    /** Units that can still be put back into stock (e.g. after a return). */
-    public function restockable(): int
-    {
-        return $this->stock_level_id ? max(0, $this->quantity - $this->restocked_quantity) : 0;
-    }
-
     /** @return BelongsTo<Order, $this> */
     public function order(): BelongsTo
     {

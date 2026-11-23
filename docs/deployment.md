@@ -122,8 +122,7 @@ Customers are emailed automatically, and each email is sent exactly once:
 | Email | Sent when |
 | --- | --- |
 | Order confirmation | Payment is confirmed (for Bacs, when it settles) |
-| Shipped, with tracking | Staff click **Mark shipped** in the admin area |
-| Refund | A refund is recorded, from the admin area or the Stripe dashboard |
+| Refund | A refund is made in the Stripe dashboard (recorded by webhook) |
 | Newsletter confirmation | Someone signs up (double opt-in) |
 | Password reset | A customer asks for one |
 
@@ -192,27 +191,7 @@ with their bag intact. Email and password sign-in still works alongside it.
 
 If the Google keys aren't set, the button tells shoppers to use email instead.
 
-## 7. Admin area
-
-Staff manage the shop at `/admin`:
-
-- **Orders:** to pack & ship, needs review, mark packed or shipped with tracking,
-  refund (optionally restocking returned items), clear review flags.
-- **Products:** details, price, photo upload, colours and sizes, and stock per variant.
-- **Departments.**
-- **Payments:** disputes, and Stripe events that didn't process (with a retry button).
-
-To give someone access, they register a normal account on the shop, then you run:
-
-```bash
-php artisan shop:make-admin jo@example.com            # grant
-php artisan shop:make-admin jo@example.com --revoke   # remove
-```
-
-Admins can refund money, so use strong, unique passwords. Consider turning on
-Filament's multi-factor authentication before launch.
-
-## 8. Running more than one app server
+## 7. Running more than one app server
 
 The app keeps no state on its own server, so you can put several identical
 servers behind a load balancer:
@@ -248,7 +227,7 @@ deleted through the app. If you change categories directly in the database, run
 `php artisan cache:forget shop.navigation`. Related-product picks refresh hourly,
 but price changes and deactivated products show at once.
 
-## 9. Stock
+## 8. Stock
 
 Stock is tracked separately for every variant (product × colour × size) in
 `stock_levels`. A variant that has no stock level counts as sold out.
@@ -269,7 +248,7 @@ Stock is tracked separately for every variant (product × colour × size) in
 4. **Failed:** the units are released. Delayed payments such as Bacs keep their
    reservation until they settle.
 
-**Managing stock** (until there is an admin screen):
+**Managing stock:**
 
 ```bash
 php artisan shop:stock merino-crew-neck-jumper                                    # show
@@ -284,7 +263,7 @@ can be sold.
 It means someone lowered `on_hand` by hand while an order was being paid for, and
 that order needs restocking or a refund.
 
-## 10. Search
+## 9. Search
 
 The search box uses whichever engine `SCOUT_DRIVER` names:
 
@@ -312,17 +291,16 @@ indexing is done on the queue, so an outage never blocks saving a product.
 To rebuild the index from scratch, run `php artisan scout:flush "App\Models\Product"`
 and then the import again.
 
-## 11. Product photos
+## 10. Product photos
 
-Upload photos in the admin area (**Products → edit → Photo**). They're stored on
-the media disk (`SHOP_MEDIA_DISK`) under `products/`. You can also upload them to
-the bucket directly and set the product's `image` column to the path. `App\Support\Media` turns it into a CDN
+Upload photos to the media disk (`SHOP_MEDIA_DISK`), e.g. `products/merino-jumper.jpg`
+in the S3 bucket, and set the product's `image` column to that path. `App\Support\Media` turns it into a CDN
 URL, and full `https://` URLs are used as they are.
 
 Locally, the same paths work on the `public` disk after running
 `php artisan storage:link` once.
 
-## 12. Monitoring
+## 11. Monitoring
 
 - **Uptime:** monitor `GET /up` every minute. It returns 500 if the database or
   Redis can't be reached, not only when PHP is down.
@@ -337,7 +315,7 @@ Locally, the same paths work on the `public` disk after running
     `last_error` in `stripe_events`. The reconciliation job will still settle the order.
   - *"Queue backlog"* (warning). Usually no worker is running.
   - *"Payment disputed"* (critical). Respond with evidence in Stripe before the deadline.
-    It's also listed under **Payments → Disputes** in the admin area.
+    The order is flagged (`review_reason`) and the dispute is kept in `payment_disputes`.
 - **Heartbeats:** create one monitor per scheduled job, expecting a ping every
   15 minutes and every day respectively. Allow some grace time. A failed
   reconciliation run (for example a Stripe outage) skips its ping, so the monitor
@@ -346,7 +324,7 @@ Locally, the same paths work on the `public` disk after running
 Sentry is configured with `send_default_pii` off, so customer emails and
 addresses are not sent unless you change that.
 
-## 13. Security headers
+## 12. Security headers
 
 Every response gets `X-Content-Type-Options`, `X-Frame-Options`,
 `Referrer-Policy` and `Permissions-Policy`. Over HTTPS in production, it also gets
@@ -356,10 +334,9 @@ script.
 
 **If you add a third-party script or widget** (analytics, chat, reviews), add its
 domains to the policy in `app/Http/Middleware/SecurityHeaders.php`, or the browser
-will block it. The admin area doesn't get the CSP, because Livewire needs inline
-scripts.
+will block it.
 
-## 14. Legal details
+## 13. Legal details
 
 Set these before launch. The privacy policy, terms and email footers show them,
 and anything missing appears on those pages as "[… to be added]":
@@ -374,7 +351,7 @@ clothing is zero-rated, which this single-rate setup doesn't handle.
 The privacy policy and terms are drafts written for this shop's setup. Have them
 reviewed by a legal professional before launch.
 
-## 15. Backups and the restore drill
+## 14. Backups and the restore drill
 
 The managed database's automatic backups are the primary backup. A backup only
 counts once you have restored it, so run the drill **before launch and then
@@ -402,7 +379,7 @@ monthly**:
 Dumps contain customer data. Store them encrypted and with restricted access.
 `storage/backups/` is git-ignored for local runs.
 
-## 16. Testing against production services
+## 15. Testing against production services
 
 The default `composer test` uses in-memory SQLite. To run the same suite on
 PostgreSQL and Redis:

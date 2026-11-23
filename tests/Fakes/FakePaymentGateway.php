@@ -56,29 +56,6 @@ class FakePaymentGateway implements PaymentGateway
         $this->expired[] = $sessionId;
     }
 
-    /** @var array<string, int> Total refunded per payment reference. */
-    public array $refunded = [];
-
-    /** @var list<array{reference: string, amount: int, key: string}> */
-    public array $refunds = [];
-
-    public function refund(string $paymentReference, int $amount, string $idempotencyKey): int
-    {
-        if ($this->failOnRefund) {
-            throw new PaymentException('Simulated: refund declined.');
-        }
-
-        // Same idempotency key: the provider returns the original refund, not a new one.
-        if (! collect($this->refunds)->contains('key', $idempotencyKey)) {
-            $this->refunds[] = ['reference' => $paymentReference, 'amount' => $amount, 'key' => $idempotencyKey];
-            $this->refunded[$paymentReference] = ($this->refunded[$paymentReference] ?? 0) + $amount;
-        }
-
-        return $this->refunded[$paymentReference];
-    }
-
-    public bool $failOnRefund = false;
-
     /** Number of retrieveCheckout() calls, i.e. provider API round trips. */
     public int $retrievals = 0;
 

@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 final class ReturnUrl
 {
     /** Pages it makes no sense to return to. */
-    private const EXCLUDED_PREFIXES = ['/login', '/register', '/forgot-password', '/reset-password', '/auth/', '/logout', '/admin', '/livewire'];
+    private const EXCLUDED_PREFIXES = ['/login', '/register', '/forgot-password', '/reset-password', '/auth/', '/logout'];
 
     /** Remember `?return=/some/page` from the request as the post-sign-in destination. */
     public static function rememberFrom(Request $request): void

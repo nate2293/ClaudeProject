@@ -105,22 +105,6 @@ class StripeGateway implements PaymentGateway
         $this->call(fn (StripeClient $stripe) => $stripe->checkout->sessions->expire($sessionId));
     }
 
-    public function refund(string $paymentReference, int $amount, string $idempotencyKey): int
-    {
-        $this->call(fn (StripeClient $stripe) => $stripe->refunds->create(
-            ['payment_intent' => $paymentReference, 'amount' => $amount],
-            ['idempotency_key' => $idempotencyKey],
-        ));
-
-        // The running total lives on the charge.
-        $intent = $this->call(fn (StripeClient $stripe) => $stripe->paymentIntents->retrieve(
-            $paymentReference,
-            ['expand' => ['latest_charge']],
-        ));
-
-        return (int) ($intent->latest_charge->amount_refunded ?? $amount);
-    }
-
     /**
      * @template T
      *

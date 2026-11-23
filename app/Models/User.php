@@ -4,21 +4,17 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
-use Filament\Models\Contracts\FilamentUser;
-use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable. `is_admin` is deliberately not
-     * here: registration and profile forms must never be able to set it. Use
-     * `php artisan shop:make-admin` instead.
+     * The attributes that are mass assignable.
      *
      * @var list<string>
      */
@@ -26,11 +22,6 @@ class User extends Authenticatable implements FilamentUser
         'name',
         'email',
         'password',
-    ];
-
-    /** A user is a customer unless promoted (also set before the row is re-read). */
-    protected $attributes = [
-        'is_admin' => false,
     ];
 
     /**
@@ -41,7 +32,6 @@ class User extends Authenticatable implements FilamentUser
     protected $hidden = [
         'password',
         'remember_token',
-        'is_admin',
         'google_id',
         'sessions_revoked_at',
     ];
@@ -56,7 +46,6 @@ class User extends Authenticatable implements FilamentUser
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'is_admin' => 'boolean',
             'sessions_revoked_at' => 'datetime',
         ];
     }
@@ -65,11 +54,5 @@ class User extends Authenticatable implements FilamentUser
     public function hasPassword(): bool
     {
         return filled($this->password);
-    }
-
-    /** Only staff can open the admin area. */
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return (bool) $this->is_admin;
     }
 }

@@ -10,20 +10,16 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Browser security headers.
  *
- * The storefront gets a strict Content Security Policy: scripts only from this
- * site, with a per-request nonce for the one inline script (Ziggy's routes).
- * The admin area (Filament/Livewire, which needs inline scripts and eval) gets
- * every header except the CSP. While Vite's dev server is running the CSP is
- * skipped too, as hot reloading injects its own scripts.
+ * Every page gets a strict Content Security Policy: scripts only from this site,
+ * with a per-request nonce for the one inline script (Ziggy's routes). While
+ * Vite's dev server is running the CSP is skipped, as hot reloading injects its
+ * own scripts.
  */
 class SecurityHeaders
 {
-    /** Paths served by Filament/Livewire rather than the Inertia storefront. */
-    private const NO_CSP_PATHS = ['admin', 'admin/*', 'livewire/*', 'filament/*'];
-
     public function handle(Request $request, Closure $next): Response
     {
-        $useCsp = ! $request->is(self::NO_CSP_PATHS) && ! Vite::isRunningHot();
+        $useCsp = ! Vite::isRunningHot();
 
         if ($useCsp) {
             Vite::useCspNonce();

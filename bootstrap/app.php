@@ -20,7 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
         },
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Every response, including the admin area and errors.
+        // Every response, including errors.
         $middleware->append(SecurityHeaders::class);
 
         // Signed-in visitors opening /login or /register go back to the shop.

@@ -43,14 +43,6 @@ class SecurityHeadersTest extends TestCase
             ->assertHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
     }
 
-    public function test_the_admin_area_gets_the_other_headers_but_no_csp()
-    {
-        $response = $this->get('/admin/login')->assertOk();
-
-        $this->assertNull($response->headers->get('Content-Security-Policy'));
-        $response->assertHeader('X-Frame-Options', 'DENY')->assertHeader('X-Content-Type-Options', 'nosniff');
-    }
-
     public function test_hsts_is_sent_only_over_https_in_production()
     {
         $this->get(route('home'))->assertHeaderMissing('Strict-Transport-Security');
