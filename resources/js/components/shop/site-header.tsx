@@ -51,7 +51,6 @@ export function SiteHeader() {
                     </Button>
                 </div>
             </Container>
-            <div aria-hidden className="selvedge" />
         </header>
     );
 }

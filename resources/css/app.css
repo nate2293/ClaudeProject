@@ -91,12 +91,6 @@
         linear-gradient(#000 0 0) 0 var(--pink) / 100% calc(100% - var(--pink)) no-repeat;
 }
 
-/* A selvedge edge: the cloth's border line with a single red identification thread. */
-@utility selvedge {
-    height: 4px;
-    background: linear-gradient(to bottom, var(--border) 0 1px, transparent 1px 2px, var(--brand) 2px 3px, transparent 3px);
-}
-
 /* Fine plain-weave texture laid over a solid cloth colour. */
 @utility weave {
     background-image:
