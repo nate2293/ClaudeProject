@@ -1,0 +1,51 @@
+import { LogosMetricOverDualRowLogos, type MarqueeItem } from '@/components/ui/logos-metric-over-dual-row-logos';
+import { formatPrice } from '@/lib/format';
+import { Briefcase, Droplets, Feather, Gem, Layers, Leaf, Recycle, Scissors, Shirt, Snowflake, Sprout, Wind } from 'lucide-react';
+import type { ReactNode } from 'react';
+
+export interface CollectionFigures {
+    pieces: number;
+    colourways: number;
+    cloths: string[];
+    names: { name: string; swatch?: string | null }[];
+    freeDeliveryOver: number;
+    returnDays: number;
+}
+
+const clothIcons: Record<string, ReactNode> = {
+    'Merino wool': <Snowflake />,
+    Lambswool: <Feather />,
+    Cashmere: <Gem />,
+    Linen: <Wind />,
+    'Organic cotton': <Leaf />,
+    'Waxed cotton': <Droplets />,
+    'Selvedge denim': <Layers />,
+    Flannel: <Shirt />,
+    'TENCEL™ lyocell': <Sprout />,
+    Canvas: <Scissors />,
+    Leather: <Briefcase />,
+    'Recycled nylon': <Recycle />,
+};
+
+/** The collection in numbers, over the cloths it's made from and the pieces in it. */
+export function CollectionFiguresSection({ collection }: { collection: CollectionFigures }) {
+    if (collection.pieces === 0) return null;
+
+    const cloths: MarqueeItem[] = collection.cloths.map((cloth) => ({ label: cloth, icon: clothIcons[cloth] ?? <Shirt /> }));
+    const pieces: MarqueeItem[] = collection.names.map((piece) => ({ label: piece.name, swatch: piece.swatch ?? undefined }));
+
+    return (
+        <LogosMetricOverDualRowLogos
+            label="The collection in numbers"
+            eyebrow="The collection"
+            metric={collection.pieces}
+            metricSuffix=""
+            description={`pieces, in ${collection.colourways} colourways and ${collection.cloths.length} kinds of cloth.`}
+            facts={[`Free UK delivery over ${formatPrice(collection.freeDeliveryOver)}`, `Free returns within ${collection.returnDays} days`]}
+            topRow={cloths}
+            topRowLabel="Cloths we use"
+            bottomRow={pieces}
+            bottomRowLabel="Pieces in the collection"
+        />
+    );
+}
