@@ -19,7 +19,7 @@ class HomeController extends Controller
                 Category::ordered()->withCount(['products' => fn ($query) => $query->active()])->get(),
             ),
             'featuredProducts' => ProductResource::collection(
-                Product::active()->where('is_featured', true)->with('category')->withStockStatus()->latest('id')->take(8)->get(),
+                Product::active()->where('is_featured', true)->with('category', 'stockLevels')->withStockStatus()->latest('id')->take(8)->get(),
             ),
         ]);
     }

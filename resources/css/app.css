@@ -236,3 +236,24 @@
         );
     }
 }
+
+/* Product cards: a colourway sliding in when the shopper picks a colour, over a crossfading gradient. */
+@keyframes colourway-in {
+    from {
+        opacity: 0;
+        transform: translateX(32%) rotate(6deg);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) rotate(var(--cw-rotate, 0deg));
+    }
+}
+
+@keyframes colourway-fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

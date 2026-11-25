@@ -1,10 +1,9 @@
+import { AnimatedEcommerceProduct } from '@/components/ui/animated-e-commerce-product';
 import { featureColour } from '@/lib/colour';
 import { cn } from '@/lib/utils';
 import type { Product, ProductBadge } from '@/types/shop';
-import { Link } from '@inertiajs/react';
-import { ColourChips } from './colour-chips';
+import { router } from '@inertiajs/react';
 import { Price } from './price';
-import { ProductImage } from './product-image';
 
 export const badgeLabels: Record<ProductBadge, { label: string; className?: string }> = {
     new: { label: 'New' },
@@ -16,33 +15,55 @@ export const badgeLabels: Record<ProductBadge, { label: string; className?: stri
 export function SwingTag({ badge, className }: { badge: ProductBadge; className?: string }) {
     const { label, className: tone } = badgeLabels[badge];
 
-    return <span className={cn('bg-background absolute top-0 left-3 px-2 pt-3 pb-1.5 text-xs font-semibold', tone, className)}>{label}</span>;
+    return <span className={cn('bg-background absolute top-0 left-3 z-10 px-2 pt-3 pb-1.5 text-xs font-semibold', tone, className)}>{label}</span>;
 }
 
+/** Adds one unit to the bag, resolving or rejecting with the server's message. */
+function addToBag(product: Product, colour: string, size: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+        router.post(
+            route('cart.lines.store'),
+            { product_id: product.id, colour, size, quantity: 1 },
+            {
+                preserveScroll: true,
+                preserveState: true,
+                onSuccess: () => resolve(),
+                onError: (errors) => reject(new Error(errors.size ?? errors.quantity ?? errors.colour ?? 'Couldn’t add this to your bag.')),
+            },
+        );
+    });
+}
+
+/**
+ * A product in a listing: browse its colourways in place, and add it to the
+ * bag without leaving the page (choosing a size in the card).
+ */
 export function ProductCard({ product }: { product: Product }) {
     const soldOut = product.inStock === false;
+    const stock = product.stock;
 
     return (
-        <article className="group relative flex flex-col">
-            <div className={cn('bg-muted relative aspect-[3/4] overflow-hidden', soldOut && 'opacity-60')}>
-                <ProductImage src={product.image} alt={product.name} swatch={featureColour(product)?.hex ?? product.swatch} />
-                {soldOut ? (
-                    <span className="bg-background text-muted-foreground absolute top-0 left-3 px-2 pt-3 pb-1.5 text-xs font-semibold">Sold out</span>
+        <AnimatedEcommerceProduct
+            title={product.name}
+            description={product.type}
+            href={product.href}
+            colourways={product.colours}
+            image={product.image}
+            initialColour={featureColour(product)?.name}
+            price={<Price amount={product.price} compareAt={product.compareAtPrice} />}
+            badge={
+                soldOut ? (
+                    <span className="bg-background text-muted-foreground absolute top-0 left-3 z-10 px-2 pt-3 pb-1.5 text-xs font-semibold">
+                        Sold out
+                    </span>
                 ) : (
                     product.badge && <SwingTag badge={product.badge} />
-                )}
-            </div>
-
-            <div className="mt-3 flex flex-1 flex-col gap-0.5">
-                <h3 className="text-[0.9375rem] leading-snug font-medium">
-                    <Link href={product.href} className="decoration-1 underline-offset-4 group-hover:underline after:absolute after:inset-0">
-                        {product.name}
-                    </Link>
-                </h3>
-                <p className="text-muted-foreground text-sm">{product.type}</p>
-                <Price amount={product.price} compareAt={product.compareAtPrice} className="mt-1" />
-                <ColourChips colours={product.colours} className="mt-2.5" />
-            </div>
-        </article>
+                )
+            }
+            sizes={product.sizes}
+            soldOut={soldOut}
+            isAvailable={(colour, size) => !stock || (stock.find((level) => level.colour === colour && level.size === size)?.available ?? 0) > 0}
+            onAddToCart={({ colour, size }) => addToBag(product, colour, size)}
+        />
     );
 }

@@ -30,7 +30,7 @@ class CatalogueQuery
     /** @return LengthAwarePaginator<int, Product> */
     public function paginate(int $perPage): LengthAwarePaginator
     {
-        $query = $this->scoped()->with('category')->withStockStatus();
+        $query = $this->scoped()->with('category', 'stockLevels')->withStockStatus();
 
         if ($this->filters->type) {
             $query->where('type', $this->filters->type);

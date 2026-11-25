@@ -51,7 +51,7 @@ class ProductController extends Controller
 
         return Product::active()
             ->whereKey($ids)
-            ->with('category')
+            ->with('category', 'stockLevels')
             ->withStockStatus()
             ->get()
             ->sortBy(fn (Product $related) => array_search($related->id, $ids, true))
