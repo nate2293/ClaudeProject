@@ -21,9 +21,9 @@ export interface GradientBackgroundProps {
     children?: ReactNode;
 }
 
-// Green sage by day (with a warm paper neutral); deep olive by night.
-const LIGHT: GradientPalette = ['#eef0e4', '#b0bc8c', '#f4f1e6', '#98a869'];
-const DARK: GradientPalette = ['#12160d', '#2e3621', '#7b8a50', '#4e5a2e'];
+// Gothic noir: pale grey and taupe by day; black and deep taupe by night.
+const LIGHT: GradientPalette = ['#dcdbdb', '#988686', '#d1d0d0', '#b3a7a7'];
+const DARK: GradientPalette = ['#000000', '#1c1717', '#5c4e4e', '#3a3131'];
 
 const blurClass: Record<BlurSize, string> = {
     none: '',
