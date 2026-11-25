@@ -33,6 +33,8 @@ export interface SharedData {
     shop: {
         currency: string;
         freeShippingThreshold: number;
+        /** Days after delivery an unworn item can be returned (config/shop.php). */
+        returnDays: number;
         standardShippingRate: number;
         maxQuantity: number;
         lowStockThreshold: number;

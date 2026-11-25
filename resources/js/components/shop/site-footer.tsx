@@ -1,20 +1,32 @@
-import { AnimatedLinksFooter } from '@/components/ui/animated-links-footer';
+import { CtaFooter } from '@/components/ui/cta-footer';
 import { footerLinks, storeName } from '@/data/storefront';
+import { formatPrice } from '@/lib/format';
 import { type SharedData } from '@/types';
 import { usePage } from '@inertiajs/react';
-import { ShopLogo } from './shop-logo';
 
-/** The storefront footer: brand, Shop / Help / About links, and the legal line. */
+/** The storefront footer: a shop call to action, Shop / Help / About links, and the legal lines. */
 export function SiteFooter() {
-    const { navigation } = usePage<SharedData>().props;
+    const { navigation, shop } = usePage<SharedData>().props;
+    const { legalName, companyNumber, vatNumber } = shop.business;
+
+    // Registered company details, as UK company websites must show them, once configured.
+    const registration = [companyNumber && `Company no. ${companyNumber}`, vatNumber && `VAT no. ${vatNumber}`].filter(Boolean).join(', ');
 
     return (
-        <AnimatedLinksFooter
-            brand={<ShopLogo className="text-xl" />}
-            description="Considered clothing in natural fibres, designed in London and made to be worn for years."
+        <CtaFooter
+            title="Clothes for years, not seasons"
+            description={`Free UK delivery over ${formatPrice(shop.freeShippingThreshold)} and free returns within ${shop.returnDays} days.`}
+            action={{ label: 'Shop the collection', href: route('shop.index') }}
             columns={footerLinks(navigation)}
-            legal={`© ${new Date().getFullYear()} ${storeName}. All rights reserved.`}
-            note="Payments securely processed by Stripe."
+            legal={
+                <>
+                    <p>
+                        © {new Date().getFullYear()} {legalName || storeName}. All rights reserved.
+                        {registration && ` ${registration}.`}
+                    </p>
+                    <p>Payments securely processed by Stripe.</p>
+                </>
+            }
         />
     );
 }

@@ -57,6 +57,7 @@ class HandleInertiaRequests extends Middleware
                 'currency' => config('shop.currency'),
                 'freeShippingThreshold' => config('shop.shipping.free_threshold'),
                 'standardShippingRate' => config('shop.shipping.standard_rate'),
+                'returnDays' => config('shop.return_days'),
                 'maxQuantity' => config('shop.max_quantity_per_line'),
                 'lowStockThreshold' => config('shop.stock.low_stock_threshold'),
                 'business' => [
