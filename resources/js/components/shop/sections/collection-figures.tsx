@@ -37,7 +37,7 @@ export function CollectionFiguresSection({ collection }: { collection: Collectio
     return (
         <Container>
             <LogosMetricOverDualRowLogos
-                className="border-border border-t"
+                className="pt-0 sm:pt-0"
                 label="The collection"
                 eyebrow=""
                 metric={null}
