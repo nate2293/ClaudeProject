@@ -10,8 +10,6 @@ import type { FooterLinkGroup, NavLink } from '@/types/shop';
 
 export const storeName = 'Loom & Lane';
 
-export const announcement = 'Free UK delivery over £75, and free returns within 30 days.';
-
 /** Main navigation: "New In", the department links shared by Laravel, then "Sale". */
 export function primaryNav(departments: NavLink[]): NavLink[] {
     return [

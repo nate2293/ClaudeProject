@@ -1,9 +1,7 @@
-import { AnnouncementBar } from '@/components/shop/announcement-bar';
 import { FlashMessage } from '@/components/shop/flash-message';
 import { ShopBottomMenu } from '@/components/shop/shop-bottom-menu';
 import { SiteFooter } from '@/components/shop/site-footer';
 import { SiteHeader } from '@/components/shop/site-header';
-import { announcement } from '@/data/storefront';
 import { Head } from '@inertiajs/react';
 import { type ReactNode } from 'react';
 
@@ -15,8 +13,7 @@ interface ShopLayoutProps {
 }
 
 /**
- * Shared shell for every public storefront page: announcement bar,
- * sticky header, main content area and footer.
+ * Shared shell for every public storefront page: sticky header, main content area and footer.
  */
 export default function ShopLayout({ title, children, footer = true }: ShopLayoutProps) {
     return (
@@ -31,7 +28,6 @@ export default function ShopLayout({ title, children, footer = true }: ShopLayou
                     Skip to content
                 </a>
 
-                <AnnouncementBar message={announcement} />
                 <SiteHeader />
                 <FlashMessage />
 
