@@ -32,7 +32,8 @@ export function Hero({ products }: { products: Product[] }) {
                 )}
 
                 <TypewriterHero
-                    className={products.length > 0 ? 'mt-6' : undefined}
+                    surface="plain"
+                    className={products.length > 0 ? 'border-border mt-10 border-t sm:mt-14' : undefined}
                     headingId="hero-heading"
                     title="Loom & Lane: clothes in natural cloth, made to last"
                     prefix="Clothes made to"

@@ -29,6 +29,8 @@ export interface TypewriterHeroProps {
     typeSpeed?: number;
     /** How long a finished word stays, in ms. */
     holdFor?: number;
+    /** "card" puts it in a bordered, frosted card; "plain" sits straight on the page. */
+    surface?: 'card' | 'plain';
     className?: string;
 }
 
@@ -100,6 +102,7 @@ export function TypewriterHero({
     headingId,
     typeSpeed = 90,
     holdFor = 2000,
+    surface = 'card',
     className,
 }: TypewriterHeroProps) {
     const reducedMotion = usePrefersReducedMotion();
@@ -107,7 +110,13 @@ export function TypewriterHero({
     const longest = words.reduce((a, b) => (b.length > a.length ? b : a), '');
 
     return (
-        <div className={cn('rounded-card bg-card/75 border px-6 py-10 text-center backdrop-blur-md sm:px-10 sm:py-14 lg:py-16', className)}>
+        <div
+            className={cn(
+                'px-6 py-10 text-center sm:px-10 sm:py-14 lg:py-16',
+                surface === 'card' && 'rounded-card bg-card/75 border backdrop-blur-md',
+                className,
+            )}
+        >
             {announcement && (
                 <div className="mb-6">
                     <Link

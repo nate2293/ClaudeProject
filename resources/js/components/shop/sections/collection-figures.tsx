@@ -36,9 +36,9 @@ export function CollectionFiguresSection({ collection }: { collection: Collectio
     const pieces: MarqueeItem[] = collection.names.map((piece) => ({ label: piece.name, swatch: piece.swatch ?? undefined }));
 
     return (
-        <Container className="mt-6">
+        <Container>
             <LogosMetricOverDualRowLogos
-                className="rounded-card bg-card/75 border backdrop-blur-md"
+                className="border-border border-t"
                 label="The collection in numbers"
                 eyebrow="The collection"
                 metric={collection.pieces}
