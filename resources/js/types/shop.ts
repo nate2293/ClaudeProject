@@ -147,13 +147,6 @@ export interface Order {
     }[];
 }
 
-export interface Testimonial {
-    quote: string;
-    author: string;
-    location: string;
-    rating: number;
-}
-
 /** An order as shown in the customer's account (App\Http\Resources\AccountOrderResource). */
 export interface AccountOrder {
     reference: string;

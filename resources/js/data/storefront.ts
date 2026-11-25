@@ -1,4 +1,4 @@
-import type { FooterLinkGroup, NavLink, Testimonial } from '@/types/shop';
+import type { FooterLinkGroup, NavLink } from '@/types/shop';
 
 /**
  * Static storefront copy and links.
@@ -52,43 +52,4 @@ export const socialLinks: NavLink[] = [
     { label: 'Instagram', href: 'https://www.instagram.com/' },
     { label: 'Pinterest', href: 'https://www.pinterest.com/' },
     { label: 'TikTok', href: 'https://www.tiktok.com/' },
-];
-
-export const testimonials: Testimonial[] = [
-    {
-        quote: 'The merino jumper is the softest thing I own. Three winters in and it still looks brand new.',
-        author: 'Hannah R.',
-        location: 'Bristol',
-        rating: 5,
-    },
-    {
-        quote: 'Finally a shop where the sizing is consistent. Ordered two shirts and both fitted perfectly.',
-        author: 'James T.',
-        location: 'Manchester',
-        rating: 5,
-    },
-    {
-        quote: 'Beautiful packaging, quick delivery and the overcoat is even better in person.',
-        author: 'Priya S.',
-        location: 'Edinburgh',
-        rating: 4,
-    },
-    {
-        quote: 'The selvedge jeans were stiff for a week, then moulded to me. Two years on they’ve faded beautifully.',
-        author: 'Tom W.',
-        location: 'Leeds',
-        rating: 5,
-    },
-    {
-        quote: 'I returned a shirt in the wrong size and had the swap within three days. No fuss at all.',
-        author: 'Aisha K.',
-        location: 'London',
-        rating: 5,
-    },
-    {
-        quote: 'The linen dress is light enough for August and still looks smart. I wish I’d bought two.',
-        author: 'Clare M.',
-        location: 'Cardiff',
-        rating: 5,
-    },
 ];
