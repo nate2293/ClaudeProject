@@ -10,13 +10,15 @@ import { type ReactNode } from 'react';
 interface ShopLayoutProps {
     title?: string;
     children: ReactNode;
+    /** Show the site footer (default). The landing page leaves it out. */
+    footer?: boolean;
 }
 
 /**
  * Shared shell for every public storefront page: announcement bar,
  * sticky header, main content area and footer.
  */
-export default function ShopLayout({ title, children }: ShopLayoutProps) {
+export default function ShopLayout({ title, children, footer = true }: ShopLayoutProps) {
     return (
         <>
             {title && <Head title={title} />}
@@ -37,7 +39,7 @@ export default function ShopLayout({ title, children }: ShopLayoutProps) {
                     {children}
                 </main>
 
-                <SiteFooter />
+                {footer && <SiteFooter />}
                 {/* Room for the floating bottom menu, so it never covers the footer. */}
                 <div aria-hidden className="h-[calc(env(safe-area-inset-bottom)+5.5rem)] lg:hidden" />
             </div>
