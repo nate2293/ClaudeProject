@@ -23,7 +23,7 @@ export default function CheckoutSuccess({ order }: { order: Order }) {
                             : 'We’re waiting for your bank to confirm the payment. Your bag is kept until it does. Refresh this page to see the latest status.'}
                     </p>
                     <p className="mt-6 text-sm">
-                        Order reference <span className="bg-muted rounded px-2 py-1 font-mono font-medium">{order.reference}</span>
+                        Order reference <span className="bg-muted rounded-full px-3 py-1 font-mono font-medium">{order.reference}</span>
                     </p>
                 </div>
 

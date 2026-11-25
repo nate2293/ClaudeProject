@@ -28,5 +28,5 @@ export default function AccountLayout({ title, children }: { title?: string; chi
 
 /** A white panel inside the account area. */
 export function AccountPanel({ children, className = '' }: { children: ReactNode; className?: string }) {
-    return <section className={`bg-background border ${className}`}>{children}</section>;
+    return <section className={`bg-background rounded-card overflow-hidden border ${className}`}>{children}</section>;
 }

@@ -81,13 +81,13 @@ function OrderCard({ order }: { order: AccountOrder }) {
                 <ul className="flex gap-2" aria-label="Items in this order">
                     {shown.map((item) => (
                         <li key={item.id} className="w-16 sm:w-20">
-                            <div className="aspect-[3/4] overflow-hidden">
+                            <div className="rounded-tile aspect-[3/4] overflow-hidden">
                                 <ProductImage src={item.image} swatch={item.swatch} alt={`${item.name}, ${item.colour}, size ${item.size}`} />
                             </div>
                         </li>
                     ))}
                     {more > 0 && (
-                        <li className="bg-secondary text-muted-foreground flex aspect-[3/4] w-16 items-center justify-center text-sm sm:w-20">
+                        <li className="bg-secondary text-muted-foreground rounded-tile flex aspect-[3/4] w-16 items-center justify-center text-sm sm:w-20">
                             +{more}
                         </li>
                     )}

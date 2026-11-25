@@ -13,12 +13,12 @@ interface QuantityStepperProps {
 
 export function QuantityStepper({ value, onChange, min = 1, max, disabled, size = 'default', label = 'Quantity' }: QuantityStepperProps) {
     const buttonClass = cn(
-        'hover:bg-accent flex items-center justify-center transition-colors disabled:pointer-events-none disabled:opacity-40',
+        'hover:bg-accent flex items-center justify-center rounded-full transition-colors disabled:pointer-events-none disabled:opacity-40',
         size === 'sm' ? 'size-8' : 'size-11',
     );
 
     return (
-        <div className={cn('inline-flex items-center rounded-md border', disabled && 'opacity-60')} role="group" aria-label={label}>
+        <div className={cn('inline-flex items-center rounded-full border', disabled && 'opacity-60')} role="group" aria-label={label}>
             <button
                 type="button"
                 className={buttonClass}

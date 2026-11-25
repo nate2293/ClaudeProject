@@ -20,7 +20,7 @@ export function OrderSummary({ subtotal, shipping, total, freeShippingThreshold,
     const progress = freeShippingThreshold ? Math.min((subtotal / freeShippingThreshold) * 100, 100) : 100;
 
     return (
-        <section aria-labelledby="summary-heading" className="bg-muted p-6 sm:p-8">
+        <section aria-labelledby="summary-heading" className="bg-muted rounded-card p-6 sm:p-8">
             <h2 id="summary-heading" className="font-display text-2xl">
                 Order summary
             </h2>

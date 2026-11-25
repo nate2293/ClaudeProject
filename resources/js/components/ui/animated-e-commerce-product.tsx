@@ -172,7 +172,7 @@ export function AnimatedEcommerceProduct(props: Partial<AnimatedEcommerceProduct
                     alt={`${title} in ${active.name}`}
                     loading="lazy"
                     className={cn(
-                        'absolute inset-[7%] h-[86%] w-[86%] object-cover shadow-[0_18px_30px_-12px_rgb(0_0_0/0.45)]',
+                        'rounded-tile absolute inset-[7%] h-[86%] w-[86%] object-cover shadow-[0_18px_30px_-12px_rgb(0_0_0/0.45)]',
                         changed && 'motion-safe:animate-[colourway-in_650ms_cubic-bezier(0.34,1.36,0.64,1)_both]',
                     )}
                 />
@@ -182,7 +182,7 @@ export function AnimatedEcommerceProduct(props: Partial<AnimatedEcommerceProduct
                     role="img"
                     aria-label={`${title} in ${active.name}`}
                     className={cn(
-                        'weave pinked-top absolute inset-x-[16%] top-[15%] bottom-[15%] rotate-[-6deg] shadow-[0_22px_32px_-14px_rgb(0_0_0/0.5)]',
+                        'weave pinked-top absolute inset-x-[16%] top-[15%] bottom-[15%] rotate-[-6deg] rounded-b-tile shadow-[0_22px_32px_-14px_rgb(0_0_0/0.5)]',
                         changed && 'motion-safe:animate-[colourway-in_650ms_cubic-bezier(0.34,1.36,0.64,1)_both]',
                     )}
                     style={{ backgroundColor: active.hex, ['--cw-rotate' as string]: '-6deg' }}
@@ -196,7 +196,7 @@ export function AnimatedEcommerceProduct(props: Partial<AnimatedEcommerceProduct
             className={cn('group text-foreground relative flex flex-col', className)}
             style={{ ['--cw-ink' as string]: inkLight, ['--cw-ink-dark' as string]: inkDark }}
         >
-            <div className={cn('bg-muted relative aspect-[3/4] overflow-hidden', soldOut && 'opacity-60')}>
+            <div className={cn('bg-muted rounded-card relative aspect-[3/4] overflow-hidden', soldOut && 'opacity-60')}>
                 {href ? (
                     <Link href={href} tabIndex={-1} aria-hidden className="absolute inset-0">
                         {picture}
@@ -211,7 +211,7 @@ export function AnimatedEcommerceProduct(props: Partial<AnimatedEcommerceProduct
                         role="group"
                         aria-label={`Choose a size for ${title} in ${active.name}`}
                         onKeyDown={(event) => event.key === 'Escape' && closePicker()}
-                        className="bg-background/95 absolute inset-x-2 bottom-2 z-20 border p-2.5 shadow-lg backdrop-blur-sm motion-safe:animate-[colourway-fade_200ms_ease_both]"
+                        className="bg-background/95 rounded-tile absolute inset-x-2 bottom-2 z-20 border p-2.5 shadow-lg backdrop-blur-sm motion-safe:animate-[colourway-fade_200ms_ease_both]"
                     >
                         <div className="mb-2 flex items-center justify-between">
                             <p className="text-xs font-medium">Choose a size</p>
@@ -237,7 +237,7 @@ export function AnimatedEcommerceProduct(props: Partial<AnimatedEcommerceProduct
                                         onClick={() => add(size)}
                                         aria-label={available ? `Add size ${size}` : `Size ${size}, sold out`}
                                         className={cn(
-                                            'h-9 border text-xs font-medium transition-colors',
+                                            'h-9 rounded-full border text-xs font-medium transition-colors',
                                             'hover:border-(--cw-ink) dark:hover:border-(--cw-ink-dark)',
                                             'focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none',
                                             'disabled:text-muted-foreground disabled:hover:border-border disabled:cursor-not-allowed disabled:border-dashed disabled:line-through',

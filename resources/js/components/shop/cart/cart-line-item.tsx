@@ -29,7 +29,7 @@ export function CartLineItem({ line, maxQuantity }: CartLineItemProps) {
 
     return (
         <li className={cn('flex gap-4 py-6 transition-opacity sm:gap-6', busy && 'opacity-60')}>
-            <Link href={line.product.href} className="w-24 shrink-0 overflow-hidden rounded-lg sm:w-32">
+            <Link href={line.product.href} className="rounded-tile w-24 shrink-0 overflow-hidden sm:w-32">
                 <div className="aspect-[3/4]">
                     <ProductImage src={line.product.image} alt={line.product.name} swatch={line.colourHex ?? line.product.swatch} />
                 </div>

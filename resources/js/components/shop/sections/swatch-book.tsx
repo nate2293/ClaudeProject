@@ -26,10 +26,10 @@ export function SwatchBook({ products }: { products: Product[] }) {
                         >
                             <Link
                                 href={product.href}
-                                className={`pinked-top weave group relative flex ${height} flex-col justify-end p-2 transition-transform duration-300 hover:-translate-y-2 focus-visible:-translate-y-2 focus-visible:outline-offset-4 motion-reduce:transition-none`}
+                                className={`pinked-top weave rounded-b-tile group relative flex ${height} flex-col justify-end p-2 transition-transform duration-300 hover:-translate-y-2 focus-visible:-translate-y-2 focus-visible:outline-offset-4 motion-reduce:transition-none`}
                                 style={{ backgroundColor: colour?.hex ?? product.swatch }}
                             >
-                                <span className="bg-background text-foreground block px-2.5 py-2 text-xs leading-snug shadow-[0_1px_0_rgb(0_0_0/0.08)]">
+                                <span className="bg-background text-foreground block rounded-lg px-2.5 py-2 text-xs leading-snug shadow-[0_1px_0_rgb(0_0_0/0.08)]">
                                     <span className="block font-semibold">{colour?.name}</span>
                                     <span className="text-muted-foreground block group-hover:underline">{product.name}</span>
                                     <span className="mt-1 block tabular-nums">{formatPrice(product.price)}</span>

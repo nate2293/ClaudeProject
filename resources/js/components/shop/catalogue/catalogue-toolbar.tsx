@@ -59,7 +59,7 @@ export function CatalogueToolbar({ baseUrl, filters, types, total }: CatalogueTo
                     <button
                         type="button"
                         onClick={() => apply({ q: null })}
-                        className="bg-muted hover:bg-accent inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm"
+                        className="bg-muted hover:bg-accent inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm"
                     >
                         Search: {filters.q}
                         <X className="size-3.5" aria-label="Clear search" />
@@ -96,7 +96,7 @@ function FilterPill({ active, className, ...props }: React.ButtonHTMLAttributes<
             type="button"
             aria-pressed={active}
             className={cn(
-                'rounded-md border px-3 py-1.5 text-sm font-medium transition-colors',
+                'rounded-full border px-3 py-1.5 text-sm font-medium transition-colors',
                 active ? 'bg-foreground text-background border-foreground' : 'hover:border-foreground/40 bg-background',
                 className,
             )}

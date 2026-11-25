@@ -55,7 +55,7 @@ export function AccountSectionsBar() {
                                 ref={isActive(item) ? activeRef : undefined}
                                 aria-current={isActive(item) ? 'page' : undefined}
                                 className={cn(
-                                    'flex items-center gap-2 border px-3 py-2 text-sm whitespace-nowrap',
+                                    'flex items-center gap-2 rounded-full border px-3.5 py-2 text-sm whitespace-nowrap',
                                     isActive(item) ? 'bg-primary text-primary-foreground border-primary' : 'bg-background',
                                 )}
                             >
@@ -77,7 +77,7 @@ export function AccountSidebar() {
 
     return (
         <aside className="space-y-2">
-            <div className="bg-background flex items-center gap-4 border p-5">
+            <div className="bg-background rounded-card flex items-center gap-4 border p-5">
                 <Avatar className="size-14">
                     {auth.user.avatar_url && <AvatarImage src={auth.user.avatar_url} alt="" referrerPolicy="no-referrer" />}
                     <AvatarFallback className="bg-primary text-primary-foreground font-display text-lg">{getInitials(auth.user.name)}</AvatarFallback>
@@ -90,7 +90,7 @@ export function AccountSidebar() {
 
             <nav aria-label="Account" className="space-y-2">
                 {groups().map((items, i) => (
-                    <ul key={i} className="bg-background divide-y border">
+                    <ul key={i} className="bg-background rounded-card divide-y overflow-hidden border">
                         {items.map((item) => {
                             const active = isActive(item);
 
@@ -113,7 +113,7 @@ export function AccountSidebar() {
                     </ul>
                 ))}
 
-                <div className="bg-background border">
+                <div className="bg-background rounded-card overflow-hidden border">
                     <Link
                         href={route('logout')}
                         method="post"

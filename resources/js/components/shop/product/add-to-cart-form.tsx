@@ -69,7 +69,7 @@ export function AddToCartForm({ product, onColourChange }: AddToCartFormProps) {
                             <span
                                 title={colourSoldOut(colour.name) ? `${colour.name} (sold out)` : colour.name}
                                 className={cn(
-                                    'weave ring-offset-background peer-checked:ring-foreground peer-focus-visible:ring-ring relative block size-10 border border-black/15 ring-2 ring-transparent ring-offset-2 transition-shadow',
+                                    'weave ring-offset-background peer-checked:ring-foreground peer-focus-visible:ring-ring relative block size-10 overflow-hidden rounded-full border border-black/15 ring-2 ring-transparent ring-offset-2 transition-shadow',
                                     colourSoldOut(colour.name) && 'sold-out-strike',
                                 )}
                                 style={{ backgroundColor: colour.hex }}
@@ -112,7 +112,7 @@ export function AddToCartForm({ product, onColourChange }: AddToCartFormProps) {
                                     />
                                     <span
                                         className={cn(
-                                            'flex h-11 items-center justify-center rounded-md border text-sm font-medium transition-colors',
+                                            'flex h-11 items-center justify-center rounded-full border text-sm font-medium transition-colors',
                                             'hover:border-foreground/50 peer-checked:bg-foreground peer-checked:text-background peer-checked:border-foreground',
                                             'peer-focus-visible:ring-ring peer-focus-visible:ring-2 peer-focus-visible:ring-offset-2',
                                             unavailable && 'text-muted-foreground hover:border-border border-dashed line-through',

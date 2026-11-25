@@ -34,7 +34,7 @@ export function FlashMessage() {
             <div
                 role={isError ? 'alert' : 'status'}
                 className={cn(
-                    'animate-in fade-in slide-in-from-top-2 pointer-events-auto flex w-full max-w-md items-start gap-3 rounded-lg border p-4 text-sm shadow-lg',
+                    'animate-in fade-in slide-in-from-top-2 rounded-tile pointer-events-auto flex w-full max-w-md items-start gap-3 border p-4 text-sm shadow-lg',
                     isError ? 'border-destructive/30 bg-background text-destructive' : 'bg-foreground text-background border-transparent',
                 )}
             >

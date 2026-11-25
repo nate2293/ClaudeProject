@@ -52,7 +52,7 @@ export default function OrderDetails({ order }: { order: AccountOrder }) {
                         <ul className="divide-y">
                             {order.items.map((item) => (
                                 <li key={item.id} className="flex gap-4 p-5 sm:px-6">
-                                    <div className="aspect-[3/4] w-20 shrink-0 overflow-hidden">
+                                    <div className="rounded-tile aspect-[3/4] w-20 shrink-0 overflow-hidden">
                                         <ProductImage src={item.image} swatch={item.swatch} alt={item.name} />
                                     </div>
                                     <div className="flex flex-1 justify-between gap-4 text-sm">

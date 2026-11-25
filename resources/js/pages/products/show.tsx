@@ -36,14 +36,14 @@ export default function ProductShow({ product, related }: ProductShowProps) {
                 <Breadcrumbs items={breadcrumbs} />
 
                 <div className="mt-6 grid gap-10 lg:grid-cols-2 lg:gap-16">
-                    <div className="bg-muted relative aspect-[4/5] overflow-hidden">
+                    <div className="bg-muted rounded-card relative aspect-[4/5] overflow-hidden">
                         <ProductImage
                             src={product.image}
                             alt={`${product.name} in ${selectedColour?.name ?? 'its default colour'}`}
                             swatch={selectedColour?.hex ?? product.swatch}
                             className="transition-colors duration-300 motion-reduce:transition-none"
                         />
-                        {product.badge && <SwingTag badge={product.badge} className="left-5 pt-4 text-sm" />}
+                        {product.badge && <SwingTag badge={product.badge} className="top-5 left-5 text-sm" />}
                     </div>
 
                     <div className="lg:sticky lg:top-24 lg:self-start">

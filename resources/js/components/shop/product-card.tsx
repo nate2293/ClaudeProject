@@ -15,7 +15,11 @@ export const badgeLabels: Record<ProductBadge, { label: string; className?: stri
 export function SwingTag({ badge, className }: { badge: ProductBadge; className?: string }) {
     const { label, className: tone } = badgeLabels[badge];
 
-    return <span className={cn('bg-background absolute top-0 left-3 z-10 px-2 pt-3 pb-1.5 text-xs font-semibold', tone, className)}>{label}</span>;
+    return (
+        <span className={cn('bg-background absolute top-3 left-3 z-10 rounded-full px-2.5 py-1 text-xs font-semibold shadow-sm', tone, className)}>
+            {label}
+        </span>
+    );
 }
 
 /** Adds one unit to the bag, resolving or rejecting with the server's message. */
@@ -53,7 +57,7 @@ export function ProductCard({ product }: { product: Product }) {
             price={<Price amount={product.price} compareAt={product.compareAtPrice} />}
             badge={
                 soldOut ? (
-                    <span className="bg-background text-muted-foreground absolute top-0 left-3 z-10 px-2 pt-3 pb-1.5 text-xs font-semibold">
+                    <span className="bg-background text-muted-foreground absolute top-3 left-3 z-10 rounded-full px-2.5 py-1 text-xs font-semibold shadow-sm">
                         Sold out
                     </span>
                 ) : (
