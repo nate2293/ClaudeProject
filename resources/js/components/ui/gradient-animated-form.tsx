@@ -183,7 +183,7 @@ export function GradientAnimatedForm({ title = 'Create an account', description,
             <GradientBackground />
 
             <header className="relative z-10 flex items-center justify-between px-5 py-5 sm:px-8">
-                <Link href={homeHref} className="font-display text-xl">
+                <Link href={homeHref} className="font-logo text-xl">
                     {brand}
                 </Link>
                 <Link href={homeHref} className="inline-flex items-center gap-1 text-sm opacity-80 hover:opacity-100">

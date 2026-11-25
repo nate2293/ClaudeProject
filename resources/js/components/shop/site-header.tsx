@@ -24,7 +24,7 @@ export function SiteHeader() {
                 brand={
                     <Link href={route('home')} aria-label={`${storeName} home`} className="group flex items-center gap-2.5">
                         <BagCheckMark className="size-[22px] transition-transform duration-300 group-hover:scale-110 motion-reduce:transition-none" />
-                        <span className="font-display text-xl">{storeName}</span>
+                        <span className="font-logo text-xl">{storeName}</span>
                     </Link>
                 }
                 items={links.map((link) => ({

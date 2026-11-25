@@ -1,5 +1,8 @@
 @import 'tailwindcss';
-@import '@fontsource-variable/archivo/wdth.css';
+/* Self-hosted fonts (no third-party requests): Alef for text and headings, Instrument Sans for the logo. */
+@import '@fontsource/alef/latin-400.css';
+@import '@fontsource/alef/latin-700.css';
+@import '@fontsource-variable/instrument-sans/wght.css';
 
 @plugin 'tailwindcss-animate';
 
@@ -8,7 +11,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-    --font-sans: 'Archivo Variable', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+    --font-sans: 'Alef', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
 
     /* Rounding, as on the product cards: cards and panels, smaller pictures and pop-ups, then controls (from --radius). Buttons are pills. */
     --radius-card: 1.5rem;
@@ -72,15 +75,18 @@
   If we ever want to remove these styles, we need to add an explicit border
   color utility to any element that depends on these defaults.
 */
-/*
-  Headings use Archivo at its widest setting, like a stencil on a cloth bale;
-  body text uses the same family at normal width.
-*/
+/* Headings: Alef bold, set a touch tighter than body text. */
 @utility font-display {
     font-family: var(--font-sans);
-    font-stretch: 125%;
-    font-weight: 620;
-    letter-spacing: -0.015em;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+/* The "Loom & Lane" wordmark. */
+@utility font-logo {
+    font-family: 'Instrument Sans Variable', ui-sans-serif, system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.025em;
 }
 
 /* Pinked (zigzag) top edge, as on a cut cloth swatch. */
