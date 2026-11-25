@@ -1,61 +1,52 @@
-import { buttonVariants } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import {
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+    Pagination as PaginationRoot,
+} from '@/components/ui/pagination';
 import type { Paginated } from '@/types/shop';
-import { Link } from '@inertiajs/react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-/** Page navigation for a paginated Laravel resource collection. */
+/**
+ * Page navigation for a paginated Laravel resource collection. Wide screens list
+ * page numbers (Laravel collapses long ranges into "…"); phones show
+ * "Page 2 of 5" between the arrows.
+ */
 export function Pagination({ meta, links }: Pick<Paginated<unknown>, 'meta' | 'links'>) {
     if (meta.last_page <= 1) return null;
 
-    // Laravel's first and last entries are "Previous" / "Next"; render those with icons instead.
+    // Laravel's first and last entries are "Previous" / "Next", rendered separately.
     const pages = meta.links.slice(1, -1);
 
     return (
-        <nav aria-label="Pagination" className="mt-14 flex items-center justify-center gap-1">
-            <PageLink href={links.prev} label="Previous page">
-                <ChevronLeft />
-            </PageLink>
+        <PaginationRoot className="mt-14">
+            <PaginationContent>
+                <PaginationItem>
+                    <PaginationPrevious href={links.prev} preserveScroll={false} />
+                </PaginationItem>
 
-            {pages.map((page, index) =>
-                page.url ? (
-                    <Link
-                        key={`${page.label}-${index}`}
-                        href={page.url}
-                        preserveScroll={false}
-                        aria-current={page.active ? 'page' : undefined}
-                        className={cn(buttonVariants({ variant: page.active ? 'default' : 'ghost', size: 'icon' }), 'size-10')}
-                    >
-                        {page.label}
-                    </Link>
-                ) : (
-                    <span key={`gap-${index}`} className="text-muted-foreground px-2">
-                        …
-                    </span>
-                ),
-            )}
+                {pages.map((page, index) => (
+                    <PaginationItem key={`${page.label}-${index}`} className="hidden sm:block">
+                        {page.url ? (
+                            <PaginationLink href={page.url} isActive={page.active} aria-label={`Page ${page.label}`}>
+                                {page.label}
+                            </PaginationLink>
+                        ) : (
+                            <PaginationEllipsis />
+                        )}
+                    </PaginationItem>
+                ))}
 
-            <PageLink href={links.next} label="Next page">
-                <ChevronRight />
-            </PageLink>
-        </nav>
-    );
-}
+                <PaginationItem className="text-muted-foreground px-3 text-sm tabular-nums sm:hidden" aria-current="page">
+                    Page {meta.current_page} of {meta.last_page}
+                </PaginationItem>
 
-function PageLink({ href, label, children }: { href: string | null; label: string; children: React.ReactNode }) {
-    const className = cn(buttonVariants({ variant: 'ghost', size: 'icon' }), 'size-10');
-
-    if (!href) {
-        return (
-            <span className={cn(className, 'pointer-events-none opacity-40')} aria-hidden>
-                {children}
-            </span>
-        );
-    }
-
-    return (
-        <Link href={href} className={className} aria-label={label}>
-            {children}
-        </Link>
+                <PaginationItem>
+                    <PaginationNext href={links.next} preserveScroll={false} />
+                </PaginationItem>
+            </PaginationContent>
+        </PaginationRoot>
     );
 }
