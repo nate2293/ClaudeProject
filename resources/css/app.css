@@ -459,3 +459,17 @@
         transform: none;
     }
 }
+
+/* Bottom menu (phones and tablets): the panel's content swaps with a soft blur. */
+@keyframes bm-swap {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+        filter: blur(8px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+}

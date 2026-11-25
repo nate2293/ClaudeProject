@@ -1,5 +1,6 @@
 import { AnnouncementBar } from '@/components/shop/announcement-bar';
 import { FlashMessage } from '@/components/shop/flash-message';
+import { ShopBottomMenu } from '@/components/shop/shop-bottom-menu';
 import { SiteFooter } from '@/components/shop/site-footer';
 import { SiteHeader } from '@/components/shop/site-header';
 import { announcement } from '@/data/storefront';
@@ -37,7 +38,11 @@ export default function ShopLayout({ title, children }: ShopLayoutProps) {
                 </main>
 
                 <SiteFooter />
+                {/* Room for the floating bottom menu, so it never covers the footer. */}
+                <div aria-hidden className="h-[calc(env(safe-area-inset-bottom)+5.5rem)] lg:hidden" />
             </div>
+
+            <ShopBottomMenu />
         </>
     );
 }

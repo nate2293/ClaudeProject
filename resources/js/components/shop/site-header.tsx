@@ -7,7 +7,6 @@ import { Link, usePage } from '@inertiajs/react';
 import { ShoppingBag } from 'lucide-react';
 import { AccountMenu } from './account-menu';
 import { Container } from './container';
-import { MobileNav } from './mobile-nav';
 import { SearchDialog } from './search-dialog';
 import { ShopLogo } from './shop-logo';
 
@@ -20,7 +19,6 @@ export function SiteHeader() {
         <header className="bg-background/85 supports-[backdrop-filter]:bg-background/70 sticky top-0 z-40 backdrop-blur">
             <Container className="flex h-16 items-center gap-4">
                 <div className="flex flex-1 items-center gap-2 lg:flex-none">
-                    <MobileNav links={links} />
                     <ShopLogo />
                 </div>
 
@@ -35,12 +33,11 @@ export function SiteHeader() {
                     />
                 </div>
 
-                <div className="flex items-center justify-end gap-1">
+                {/* Phones and tablets get these in the bottom menu instead (ShopBottomMenu). */}
+                <div className="hidden items-center justify-end gap-1 lg:flex">
                     <SearchDialog />
 
-                    <div className="hidden sm:block">
-                        <AccountMenu />
-                    </div>
+                    <AccountMenu />
 
                     <Button variant="ghost" size="icon" asChild className="relative">
                         <Link href={route('cart.index')} aria-label={`Shopping bag, ${cart.count} ${cart.count === 1 ? 'item' : 'items'}`}>
