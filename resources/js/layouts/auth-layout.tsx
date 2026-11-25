@@ -1,9 +1,11 @@
-import AuthLayoutTemplate from '@/layouts/auth/auth-simple-layout';
+import { GradientAnimatedForm } from '@/components/ui/gradient-animated-form';
+import { type ReactNode } from 'react';
 
-export default function AuthLayout({ children, title, description, ...props }: { children: React.ReactNode; title: string; description: string }) {
+/** Every sign-in page (log in, register, password reset, verification) shares the gradient card. */
+export default function AuthLayout({ children, title, description }: { children: ReactNode; title: string; description?: string }) {
     return (
-        <AuthLayoutTemplate title={title} description={description} {...props}>
+        <GradientAnimatedForm title={title} description={description} homeHref={route('home')}>
             {children}
-        </AuthLayoutTemplate>
+        </GradientAnimatedForm>
     );
 }

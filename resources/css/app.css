@@ -260,3 +260,69 @@
         opacity: 1;
     }
 }
+
+/* Sign-in pages: drifting cloth-coloured light behind a frosted card (components/ui/gradient-animated-form). */
+.gradient-form {
+    --gf-bg1: #e3e7ee;
+    --gf-bg2: #fafaf8;
+    --gf-c1: 86, 99, 127; /* faded denim */
+    --gf-c2: 31, 43, 71; /* indigo */
+    --gf-c3: 120, 140, 190;
+    --gf-c4: 163, 180, 210; /* chambray */
+    --gf-c5: 56, 70, 110;
+    --gf-interactive: 90, 110, 170;
+    --gf-size: 80%;
+    --gf-blend: multiply;
+    --gf-alpha: 0.42; /* softer on light paper, so text stays readable over it */
+}
+
+.dark .gradient-form {
+    --gf-bg1: #0a0e18;
+    --gf-bg2: #141c2e;
+    --gf-c1: 70, 95, 160;
+    --gf-c2: 86, 99, 127;
+    --gf-c3: 110, 130, 200;
+    --gf-c4: 60, 120, 170;
+    --gf-c5: 50, 40, 90;
+    --gf-interactive: 120, 140, 220;
+    --gf-blend: hard-light;
+    --gf-alpha: 0.8;
+}
+
+.gradient-form .gf-blob {
+    position: absolute;
+    width: var(--gf-size);
+    height: var(--gf-size);
+    top: calc(50% - var(--gf-size) / 2);
+    left: calc(50% - var(--gf-size) / 2);
+    mix-blend-mode: var(--gf-blend);
+}
+
+@keyframes gf-vertical {
+    0%,
+    100% {
+        transform: translateY(-50%);
+    }
+    50% {
+        transform: translateY(50%);
+    }
+}
+
+@keyframes gf-circle {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes gf-horizontal {
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(-10%);
+    }
+    50% {
+        transform: translateX(50%) translateY(10%);
+    }
+}

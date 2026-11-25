@@ -1,40 +1,33 @@
-// Components
-import { Head, useForm } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
-import { FormEventHandler } from 'react';
-
-import TextLink from '@/components/text-link';
+import { AuthStatus } from '@/components/auth/auth-bits';
 import { Button } from '@/components/ui/button';
+import { gradientButtonClass } from '@/components/ui/gradient-animated-form';
 import AuthLayout from '@/layouts/auth-layout';
+import { Head, Link, useForm } from '@inertiajs/react';
+import { LoaderCircle } from 'lucide-react';
+import { type FormEventHandler } from 'react';
 
 export default function VerifyEmail({ status }: { status?: string }) {
     const { post, processing } = useForm({});
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-
         post(route('verification.send'));
     };
 
     return (
-        <AuthLayout title="Verify email" description="Please verify your email address by clicking on the link we just emailed to you.">
-            <Head title="Email verification" />
+        <AuthLayout title="Check your inbox" description="Click the link we emailed you to verify your address.">
+            <Head title="Verify email" />
 
-            {status === 'verification-link-sent' && (
-                <div className="mb-4 text-center text-sm font-medium text-green-600">
-                    A new verification link has been sent to the email address you provided during registration.
-                </div>
-            )}
+            {status === 'verification-link-sent' && <AuthStatus>We’ve sent a new verification link to your email address.</AuthStatus>}
 
-            <form onSubmit={submit} className="space-y-6 text-center">
-                <Button disabled={processing} variant="secondary">
-                    {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                    Resend verification email
+            <form onSubmit={submit} className="space-y-5 text-center">
+                <Button type="submit" className={gradientButtonClass} magneticStrength={0.15} disabled={processing}>
+                    {processing && <LoaderCircle className="animate-spin" />}
+                    Resend the email
                 </Button>
-
-                <TextLink href={route('logout')} method="post" className="mx-auto block text-sm">
-                    Log out
-                </TextLink>
+                <Link href={route('logout')} method="post" as="button" className="mx-auto block text-sm opacity-80 hover:underline">
+                    Sign out
+                </Link>
             </form>
         </AuthLayout>
     );

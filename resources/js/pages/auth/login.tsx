@@ -1,15 +1,10 @@
+import { AuthLink, AuthStatus, GoogleOption } from '@/components/auth/auth-bits';
+import { Button } from '@/components/ui/button';
+import { GradientCheckbox, GradientField, gradientButtonClass } from '@/components/ui/gradient-animated-form';
+import AuthLayout from '@/layouts/auth-layout';
 import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
-import { FormEventHandler } from 'react';
-
-import InputError from '@/components/input-error';
-import { GoogleButton } from '@/components/shop/google-button';
-import TextLink from '@/components/text-link';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import AuthLayout from '@/layouts/auth-layout';
+import { type FormEventHandler } from 'react';
 
 type LoginForm = {
     email: string;
@@ -31,82 +26,63 @@ export default function Login({ status, canResetPassword }: LoginProps) {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        post(route('login'), {
-            onFinish: () => reset('password'),
-        });
+        post(route('login'), { onFinish: () => reset('password') });
     };
 
     return (
-        <AuthLayout title="Log in to your account" description="Enter your email and password below to log in">
-            <Head title="Log in" />
+        <AuthLayout title="Welcome back" description="Sign in to see your orders and check out faster.">
+            <Head title="Sign in" />
 
-            <GoogleButton />
-            <div className="text-muted-foreground flex items-center gap-3 text-xs" aria-hidden>
-                <span className="bg-border h-px flex-1" />
-                or use your email
-                <span className="bg-border h-px flex-1" />
-            </div>
+            {status && <AuthStatus>{status}</AuthStatus>}
+            <GoogleOption />
 
-            <form className="flex flex-col gap-6" onSubmit={submit}>
-                <div className="grid gap-6">
-                    <div className="grid gap-2">
-                        <Label htmlFor="email">Email address</Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            required
-                            autoFocus
-                            tabIndex={1}
-                            autoComplete="email"
-                            value={data.email}
-                            onChange={(e) => setData('email', e.target.value)}
-                            placeholder="email@example.com"
-                        />
-                        <InputError message={errors.email} />
-                    </div>
+            <form onSubmit={submit} className="space-y-5" noValidate>
+                <GradientField
+                    id="email"
+                    label="Email address"
+                    type="email"
+                    required
+                    autoFocus
+                    autoComplete="email"
+                    value={data.email}
+                    onChange={(e) => setData('email', e.target.value)}
+                    error={errors.email}
+                />
+                <GradientField
+                    id="password"
+                    label="Password"
+                    type="password"
+                    revealable
+                    required
+                    autoComplete="current-password"
+                    value={data.password}
+                    onChange={(e) => setData('password', e.target.value)}
+                    error={errors.password}
+                />
 
-                    <div className="grid gap-2">
-                        <div className="flex items-center">
-                            <Label htmlFor="password">Password</Label>
-                            {canResetPassword && (
-                                <TextLink href={route('password.request')} className="ml-auto text-sm" tabIndex={5}>
-                                    Forgot password?
-                                </TextLink>
-                            )}
-                        </div>
-                        <Input
-                            id="password"
-                            type="password"
-                            required
-                            tabIndex={2}
-                            autoComplete="current-password"
-                            value={data.password}
-                            onChange={(e) => setData('password', e.target.value)}
-                            placeholder="Password"
-                        />
-                        <InputError message={errors.password} />
-                    </div>
-
-                    <div className="flex items-center space-x-3">
-                        <Checkbox id="remember" name="remember" tabIndex={3} />
-                        <Label htmlFor="remember">Remember me</Label>
-                    </div>
-
-                    <Button type="submit" className="mt-4 w-full" tabIndex={4} disabled={processing}>
-                        {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Log in
-                    </Button>
+                <div className="flex items-center justify-between gap-4">
+                    <GradientCheckbox
+                        id="remember"
+                        label="Remember me"
+                        checked={data.remember}
+                        onChange={(e) => setData('remember', e.target.checked)}
+                    />
+                    {canResetPassword && (
+                        <AuthLink href={route('password.request')} className="text-sm">
+                            Forgot password?
+                        </AuthLink>
+                    )}
                 </div>
 
-                <div className="text-muted-foreground text-center text-sm">
-                    Don't have an account?{' '}
-                    <TextLink href={route('register')} tabIndex={5}>
-                        Sign up
-                    </TextLink>
-                </div>
+                <Button type="submit" className={gradientButtonClass} magneticStrength={0.15} disabled={processing}>
+                    {processing && <LoaderCircle className="animate-spin" />}
+                    Sign in
+                </Button>
             </form>
 
-            {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
+            <p className="mt-6 text-center text-sm opacity-80">
+                New here? <AuthLink href={route('register')}>Create an account</AuthLink>
+            </p>
         </AuthLayout>
     );
 }
