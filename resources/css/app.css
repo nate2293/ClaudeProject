@@ -11,6 +11,19 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
+    /* Typewriter hero cursor. */
+    --animate-caret: caret-blink 1s step-end infinite;
+    @keyframes caret-blink {
+        0%,
+        50% {
+            opacity: 1;
+        }
+        51%,
+        100% {
+            opacity: 0;
+        }
+    }
+
     --font-sans: 'Alef', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
 
     /* Rounding, as on the product cards: cards and panels, smaller pictures and pop-ups, then controls (from --radius). Buttons are pills. */
