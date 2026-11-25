@@ -65,8 +65,8 @@ export function ShoppingNavbarUnderline({
             className={cn(
                 'rounded-tile mx-auto flex h-16 w-full max-w-7xl items-center gap-4 border pr-2 pl-5 sm:pl-6',
                 // Frosted glass, tinted to the theme.
-                'border-white/70 bg-white/55 shadow-[0_10px_40px_-12px_rgb(31_43_71/0.28),inset_0_1px_0_rgb(255_255_255/0.8)] backdrop-blur-xl backdrop-saturate-150',
-                'dark:border-white/12 dark:bg-white/[0.04] dark:shadow-[0_10px_40px_-12px_rgb(86_120_220/0.3),inset_0_1px_0_rgb(255_255_255/0.08)]',
+                'border-white/70 bg-white/55 shadow-[0_10px_40px_-12px_rgb(43_51_32/0.28),inset_0_1px_0_rgb(255_255_255/0.8)] backdrop-blur-xl backdrop-saturate-150',
+                'dark:border-white/12 dark:bg-white/[0.04] dark:shadow-[0_10px_40px_-12px_rgb(123_138_80/0.3),inset_0_1px_0_rgb(255_255_255/0.08)]',
                 className,
             )}
         >

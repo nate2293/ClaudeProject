@@ -58,7 +58,7 @@ export function CenteredShimmerTextHeadlineHero(props: CenteredShimmerTextHeadli
 
     return (
         <section aria-labelledby="hero-heading" className={cn('mx-auto w-full max-w-6xl', className)}>
-            <div className="rounded-card bg-card/70 overflow-hidden border border-white/60 shadow-[0_20px_60px_-24px_rgb(31_43_71/0.35)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.04]">
+            <div className="rounded-card bg-card/70 overflow-hidden border border-white/60 shadow-[0_20px_60px_-24px_rgb(43_51_32/0.35)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.04]">
                 <div className="px-6 py-10 text-center sm:px-10 sm:py-14 lg:px-14 lg:py-16">
                     {announcement && (
                         <div className="mb-7 flex justify-center">

@@ -14,7 +14,7 @@ export function GoogleButton({ className, returnTo }: { className?: string; retu
             href={route('auth.google.redirect', { return: returnTo ?? url })}
             className={cn(
                 'inline-flex h-11 w-full items-center justify-center gap-3 rounded-md border border-[#747775] bg-white px-4 text-sm font-medium text-[#1f1f1f]',
-                'transition-colors hover:bg-[#f2f2f2] focus-visible:ring-2 focus-visible:ring-[#1f2b47] focus-visible:ring-offset-2 focus-visible:outline-none',
+                'transition-colors hover:bg-[#f2f2f2] focus-visible:ring-2 focus-visible:ring-[#4e5a2e] focus-visible:ring-offset-2 focus-visible:outline-none',
                 className,
             )}
         >

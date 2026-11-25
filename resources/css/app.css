@@ -127,32 +127,32 @@
 }
 
 :root {
-    --background: #fafaf8;
-    --foreground: #1f2b47;
-    --card: #fafaf8;
-    --card-foreground: #1f2b47;
-    --popover: #ffffff;
-    --popover-foreground: #1f2b47;
-    --primary: #1f2b47;
-    --primary-foreground: #fafaf8;
-    --secondary: #e3e7ee;
-    --secondary-foreground: #1f2b47;
-    --muted: #eef0f4;
-    --muted-foreground: #56637f;
-    --accent: #e3e7ee;
-    --accent-foreground: #1f2b47;
+    --background: #f6f5ee;
+    --foreground: #2b3320;
+    --card: #f6f5ee;
+    --card-foreground: #2b3320;
+    --popover: #fbfaf5;
+    --popover-foreground: #2b3320;
+    --primary: #4e5a2e;
+    --primary-foreground: #f6f5ee;
+    --secondary: #e4e8d6;
+    --secondary-foreground: #2b3320;
+    --muted: #edefe3;
+    --muted-foreground: #5c6643;
+    --accent: #e4e8d6;
+    --accent-foreground: #2b3320;
     --destructive: hsl(0, 84.2%, 60.2%);
     --destructive-foreground: hsl(0, 0%, 98%);
-    --border: #d5dbe5;
-    --input: #c3cad8;
-    --ring: #1f2b47;
+    --border: #d6dbc4;
+    --input: #c3caab;
+    --ring: #7b8a50;
     --chart-1: hsl(12, 76%, 61%);
     --chart-2: hsl(173, 58%, 39%);
     --chart-3: hsl(197, 37%, 24%);
     --chart-4: hsl(43, 74%, 66%);
     --chart-5: hsl(27, 87%, 67%);
     --brand: #b0172f;
-    --brand-foreground: #fafaf8;
+    --brand-foreground: #f6f5ee;
     --radius: 0.875rem;
     --sidebar-background: hsl(0, 0%, 98%);
     --sidebar-foreground: hsl(240, 5.3%, 30%);
@@ -165,27 +165,27 @@
 }
 
 .dark {
-    --background: #141c2e;
-    --foreground: #e6e9f0;
-    --card: #141c2e;
-    --card-foreground: #e6e9f0;
-    --popover: #1a2338;
-    --popover-foreground: #e6e9f0;
-    --primary: #e6e9f0;
-    --primary-foreground: #141c2e;
-    --secondary: #232d45;
-    --secondary-foreground: #e6e9f0;
-    --muted: #1b2438;
-    --muted-foreground: #9aa5bd;
-    --accent: #232d45;
-    --accent-foreground: #e6e9f0;
+    --background: #171b12;
+    --foreground: #e9ecdf;
+    --card: #171b12;
+    --card-foreground: #e9ecdf;
+    --popover: #1e2318;
+    --popover-foreground: #e9ecdf;
+    --primary: #b0bc8c;
+    --primary-foreground: #171b12;
+    --secondary: #262c1d;
+    --secondary-foreground: #e9ecdf;
+    --muted: #20251a;
+    --muted-foreground: #a7af90;
+    --accent: #262c1d;
+    --accent-foreground: #e9ecdf;
     --destructive: hsl(0, 84%, 60%);
     --destructive-foreground: hsl(0, 0%, 98%);
-    --border: #2a3550;
-    --input: #34405e;
-    --ring: #c9d0de;
+    --border: #333a28;
+    --input: #3d4530;
+    --ring: #98a869;
     --brand: #f0707f;
-    --brand-foreground: #141c2e;
+    --brand-foreground: #171b12;
     --chart-1: hsl(220, 70%, 50%);
     --chart-2: hsl(160, 60%, 45%);
     --chart-3: hsl(30, 80%, 55%);
@@ -263,28 +263,28 @@
 
 /* Sign-in pages: drifting cloth-coloured light behind a frosted card (components/ui/gradient-animated-form). */
 .gradient-form {
-    --gf-bg1: #e3e7ee;
-    --gf-bg2: #fafaf8;
-    --gf-c1: 86, 99, 127; /* faded denim */
-    --gf-c2: 31, 43, 71; /* indigo */
-    --gf-c3: 120, 140, 190;
-    --gf-c4: 163, 180, 210; /* chambray */
-    --gf-c5: 56, 70, 110;
-    --gf-interactive: 90, 110, 170;
+    --gf-bg1: #e8ebdd;
+    --gf-bg2: #f6f5ee;
+    --gf-c1: 123, 138, 80;
+    --gf-c2: 78, 90, 46;
+    --gf-c3: 152, 168, 105;
+    --gf-c4: 176, 188, 140;
+    --gf-c5: 95, 108, 60;
+    --gf-interactive: 123, 138, 80;
     --gf-size: 80%;
     --gf-blend: multiply;
     --gf-alpha: 0.42; /* softer on light paper, so text stays readable over it */
 }
 
 .dark .gradient-form {
-    --gf-bg1: #0a0e18;
-    --gf-bg2: #141c2e;
-    --gf-c1: 70, 95, 160;
-    --gf-c2: 86, 99, 127;
-    --gf-c3: 110, 130, 200;
-    --gf-c4: 60, 120, 170;
-    --gf-c5: 50, 40, 90;
-    --gf-interactive: 120, 140, 220;
+    --gf-bg1: #0d100a;
+    --gf-bg2: #171b12;
+    --gf-c1: 123, 138, 80;
+    --gf-c2: 152, 168, 105;
+    --gf-c3: 176, 188, 140;
+    --gf-c4: 95, 120, 70;
+    --gf-c5: 70, 55, 35;
+    --gf-interactive: 152, 168, 105;
     --gf-blend: hard-light;
     --gf-alpha: 0.8;
 }

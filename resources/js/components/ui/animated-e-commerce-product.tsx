@@ -37,8 +37,8 @@ export interface AnimatedEcommerceProductProps {
     className?: string;
 }
 
-const LIGHT_SURFACE = '#fafaf8';
-const DARK_SURFACE = '#141c2e';
+const LIGHT_SURFACE = '#f6f5ee';
+const DARK_SURFACE = '#171b12';
 
 const defaults: AnimatedEcommerceProductProps = {
     title: 'Merino Crew Neck Jumper',
@@ -103,7 +103,7 @@ export function AnimatedEcommerceProduct(props: Partial<AnimatedEcommerceProduct
     const photo = active.image ?? image;
     const inkLight = readableInk(active.hex, LIGHT_SURFACE);
     const inkDark = readableInk(active.hex, DARK_SURFACE);
-    const fillText = contrastRatio(mix(active.hex, -0.3), '#ffffff') >= 4.5 ? '#ffffff' : '#1f2b47';
+    const fillText = contrastRatio(mix(active.hex, -0.3), '#ffffff') >= 4.5 ? '#ffffff' : '#2b3320';
     const colourSoldOut = soldOut || (sizes.length > 0 && sizes.every((size) => !isAvailable(active.name, size)));
 
     useEffect(() => {
