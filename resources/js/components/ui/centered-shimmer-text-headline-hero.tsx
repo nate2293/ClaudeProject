@@ -28,10 +28,14 @@ export interface CenteredShimmerTextHeadlineHeroProps {
     note?: ReactNode;
     /** Up to four figures in the bar along the bottom. */
     stats?: HeroStat[];
+    /** No card frame: the text sits straight on the page (or a background). */
+    bare?: boolean;
+    /** Shown between the calls to action and the stats, e.g. a gallery. */
+    children?: ReactNode;
     className?: string;
 }
 
-const defaults: Required<Omit<CenteredShimmerTextHeadlineHeroProps, 'className'>> = {
+const defaults: Required<Omit<CenteredShimmerTextHeadlineHeroProps, 'className' | 'bare' | 'children'>> = {
     announcement: { label: 'New in', text: 'The winter collection is here', href: '/shop' },
     headline: 'Clothes in natural cloth,',
     shimmerText: 'made to be worn for years',
@@ -54,12 +58,17 @@ const defaults: Required<Omit<CenteredShimmerTextHeadlineHeroProps, 'className'>
  * is still for reduced-motion users; text stays readable without it.
  */
 export function CenteredShimmerTextHeadlineHero(props: CenteredShimmerTextHeadlineHeroProps) {
-    const { announcement, headline, shimmerText, description, primaryCta, secondaryCta, note, stats, className } = { ...defaults, ...props };
+    const { announcement, headline, shimmerText, description, primaryCta, secondaryCta, note, stats, bare, children, className } = { ...defaults, ...props };
 
     return (
         <section aria-labelledby="hero-heading" className={cn('mx-auto w-full max-w-6xl', className)}>
-            <div className="rounded-card bg-card/70 overflow-hidden border border-white/60 shadow-[0_20px_60px_-24px_rgb(43_51_32/0.35)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.04]">
-                <div className="px-6 py-10 text-center sm:px-10 sm:py-14 lg:px-14 lg:py-16">
+            <div
+                className={cn(
+                    !bare &&
+                        'rounded-card bg-card/70 overflow-hidden border border-white/60 shadow-[0_20px_60px_-24px_rgb(43_51_32/0.35)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.04]',
+                )}
+            >
+                <div className={cn('text-center', bare ? 'px-2 pb-10 sm:pb-12' : 'px-6 py-10 sm:px-10 sm:py-14 lg:px-14 lg:py-16')}>
                     {announcement && (
                         <div className="mb-7 flex justify-center">
                             <Link
@@ -122,8 +131,10 @@ export function CenteredShimmerTextHeadlineHero(props: CenteredShimmerTextHeadli
                     {note && <p className="text-muted-foreground mt-5 text-sm">{note}</p>}
                 </div>
 
+                {children}
+
                 {stats.length > 0 && (
-                    <dl className="bg-muted/40 border-t px-6 py-7 sm:px-10">
+                    <dl className={cn(bare ? 'mt-8 border-t px-2 pt-6' : 'bg-muted/40 border-t px-6 py-7 sm:px-10')}>
                         <div className="mx-auto grid max-w-3xl grid-cols-2 gap-6 md:grid-cols-4 md:gap-8">
                             {stats.slice(0, 4).map((stat) => (
                                 <div key={stat.label} className="flex flex-col-reverse text-center">
