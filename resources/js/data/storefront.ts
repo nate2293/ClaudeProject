@@ -73,4 +73,22 @@ export const testimonials: Testimonial[] = [
         location: 'Edinburgh',
         rating: 4,
     },
+    {
+        quote: 'The selvedge jeans were stiff for a week, then moulded to me. Two years on they’ve faded beautifully.',
+        author: 'Tom W.',
+        location: 'Leeds',
+        rating: 5,
+    },
+    {
+        quote: 'I returned a shirt in the wrong size and had the swap within three days. No fuss at all.',
+        author: 'Aisha K.',
+        location: 'London',
+        rating: 5,
+    },
+    {
+        quote: 'The linen dress is light enough for August and still looks smart. I wish I’d bought two.',
+        author: 'Clare M.',
+        location: 'Cardiff',
+        rating: 5,
+    },
 ];

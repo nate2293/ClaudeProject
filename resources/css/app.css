@@ -334,3 +334,13 @@
         filter: blur(0);
     }
 }
+
+/* Hero headline: a band of light sweeping across the words. */
+@keyframes hero-shimmer {
+    from {
+        background-position: 200% center;
+    }
+    to {
+        background-position: -200% center;
+    }
+}
