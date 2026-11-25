@@ -147,7 +147,7 @@ export function GradientField({ id, label, error, revealable, type = 'text', cla
 export function GradientCheckbox({ id, label, ...props }: InputHTMLAttributes<HTMLInputElement> & { id: string; label: string }) {
     return (
         <label htmlFor={id} className="flex cursor-pointer items-center gap-2 text-sm">
-            <input id={id} type="checkbox" className="size-4 accent-black dark:accent-white" {...props} />
+            <input id={id} type="checkbox" className="size-4 accent-[#174d38] dark:accent-white" {...props} />
             {label}
         </label>
     );
@@ -155,7 +155,7 @@ export function GradientCheckbox({ id, label, ...props }: InputHTMLAttributes<HT
 
 /** The primary button's look on the glass card (pass to <Button className=…>). */
 export const gradientButtonClass =
-    'h-12 w-full text-base font-semibold bg-black text-white hover:bg-[#5c4e4e] dark:border dark:border-white/50 dark:bg-white/10 dark:backdrop-blur-md dark:hover:bg-white dark:hover:text-black dark:hover:shadow-[0_0_18px_rgb(255_255_255/0.5)]';
+    'h-12 w-full text-base font-semibold bg-[#174d38] text-[#f2f2f2] hover:bg-[#1d5f45] dark:border dark:border-white/50 dark:bg-white/10 dark:backdrop-blur-md dark:hover:bg-white dark:hover:text-[#0e1412] dark:hover:shadow-[0_0_18px_rgb(255_255_255/0.5)]';
 
 /* ------------------------------------------------------------------------------------------------
  * The page shell: backdrop, a way back to the shop, and the frosted card.
@@ -179,7 +179,7 @@ export interface GradientAnimatedFormProps {
  */
 export function GradientAnimatedForm({ title = 'Create an account', description, children, homeHref = '/', brand = 'Loom & Lane', className }: GradientAnimatedFormProps) {
     return (
-        <div className="gradient-form relative isolate flex min-h-svh flex-col text-black dark:text-[#d1d0d0]">
+        <div className="gradient-form relative isolate flex min-h-svh flex-col text-[#1a1a1a] dark:text-[#f2f2f2]">
             <GradientBackground />
 
             <header className="relative z-10 flex items-center justify-between px-5 py-5 sm:px-8">

@@ -109,7 +109,7 @@ export function DynamicGridGallery({
                                     role="img"
                                     aria-label={item.alt ?? item.title}
                                     className="weave absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transition-none"
-                                    style={{ backgroundColor: item.swatch ?? '#988686' }}
+                                    style={{ backgroundColor: item.swatch ?? '#cbcbcb' }}
                                 />
                             )}
                             {/* Soft vignette, lifted from the active tile. */}

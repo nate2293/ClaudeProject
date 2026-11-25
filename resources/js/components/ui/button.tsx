@@ -17,7 +17,7 @@ const buttonVariants = cva(
                 ghost: 'hover:bg-accent hover:text-accent-foreground',
                 link: 'text-primary underline-offset-4 hover:underline',
                 /** Ink-dark in both themes. */
-                dark: 'bg-black text-[#d1d0d0] hover:bg-[#5c4e4e] hover:text-white dark:bg-[#1c1717] dark:hover:bg-[#5c4e4e]',
+                dark: 'bg-[#4d1717] text-[#f2f2f2] hover:bg-[#5e1d1d] dark:bg-[#4d1717] dark:hover:bg-[#5e1d1d]',
             },
             size: {
                 default: 'h-10 px-4 py-2',

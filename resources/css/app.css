@@ -115,32 +115,32 @@
 }
 
 :root {
-    --background: #d1d0d0;
-    --foreground: #000000;
-    --card: #d1d0d0;
-    --card-foreground: #000000;
-    --popover: #dad9d9;
-    --popover-foreground: #000000;
-    --primary: #000000;
-    --primary-foreground: #d1d0d0;
-    --secondary: #c9c5c5;
-    --secondary-foreground: #000000;
-    --muted: #cbc8c8;
-    --muted-foreground: #5c4e4e;
-    --accent: #c9c5c5;
-    --accent-foreground: #000000;
+    --background: #f2f2f2;
+    --foreground: #1a1a1a;
+    --card: #f2f2f2;
+    --card-foreground: #1a1a1a;
+    --popover: #fafafa;
+    --popover-foreground: #1a1a1a;
+    --primary: #174d38;
+    --primary-foreground: #f2f2f2;
+    --secondary: #e6e6e6;
+    --secondary-foreground: #1a1a1a;
+    --muted: #ebebeb;
+    --muted-foreground: #5b5f5e;
+    --accent: #e6e6e6;
+    --accent-foreground: #1a1a1a;
     --destructive: hsl(0, 84.2%, 60.2%);
     --destructive-foreground: hsl(0, 0%, 98%);
-    --border: #b3abab;
-    --input: #7d6d6d;
-    --ring: #5c4e4e;
+    --border: #cbcbcb;
+    --input: #808583;
+    --ring: #174d38;
     --chart-1: hsl(12, 76%, 61%);
     --chart-2: hsl(173, 58%, 39%);
     --chart-3: hsl(197, 37%, 24%);
     --chart-4: hsl(43, 74%, 66%);
     --chart-5: hsl(27, 87%, 67%);
-    --brand: #9c1028;
-    --brand-foreground: #d1d0d0;
+    --brand: #4d1717;
+    --brand-foreground: #f2f2f2;
     --radius: 0.875rem;
     --sidebar-background: hsl(0, 0%, 98%);
     --sidebar-foreground: hsl(240, 5.3%, 30%);
@@ -153,27 +153,27 @@
 }
 
 .dark {
-    --background: #000000;
-    --foreground: #d1d0d0;
-    --card: #000000;
-    --card-foreground: #d1d0d0;
-    --popover: #110e0e;
-    --popover-foreground: #d1d0d0;
-    --primary: #d1d0d0;
-    --primary-foreground: #000000;
-    --secondary: #1c1717;
-    --secondary-foreground: #d1d0d0;
-    --muted: #141111;
-    --muted-foreground: #988686;
-    --accent: #1c1717;
-    --accent-foreground: #d1d0d0;
+    --background: #0e1412;
+    --foreground: #f2f2f2;
+    --card: #0e1412;
+    --card-foreground: #f2f2f2;
+    --popover: #151c19;
+    --popover-foreground: #f2f2f2;
+    --primary: #9cc7b3;
+    --primary-foreground: #0e1412;
+    --secondary: #19211e;
+    --secondary-foreground: #f2f2f2;
+    --muted: #141b18;
+    --muted-foreground: #a3aaa7;
+    --accent: #19211e;
+    --accent-foreground: #f2f2f2;
     --destructive: hsl(0, 84%, 60%);
     --destructive-foreground: hsl(0, 0%, 98%);
-    --border: #2f2828;
-    --input: #766666;
-    --ring: #988686;
-    --brand: #f0707f;
-    --brand-foreground: #000000;
+    --border: #26302c;
+    --input: #6b7571;
+    --ring: #9cc7b3;
+    --brand: #e0a3a3;
+    --brand-foreground: #0e1412;
     --chart-1: hsl(220, 70%, 50%);
     --chart-2: hsl(160, 60%, 45%);
     --chart-3: hsl(30, 80%, 55%);
@@ -249,30 +249,30 @@
     }
 }
 
-/* Sign-in pages: drifting taupe light behind a frosted card (components/ui/gradient-animated-form). */
+/* Sign-in pages: drifting green and brown light behind a frosted card (components/ui/gradient-animated-form). */
 .gradient-form {
-    --gf-bg1: #c4c0c0;
-    --gf-bg2: #d1d0d0;
-    --gf-c1: 152, 134, 134;
-    --gf-c2: 92, 78, 78;
-    --gf-c3: 181, 171, 171;
-    --gf-c4: 120, 104, 104;
-    --gf-c5: 60, 50, 50;
-    --gf-interactive: 152, 134, 134;
+    --gf-bg1: #e4e4e4;
+    --gf-bg2: #f2f2f2;
+    --gf-c1: 23, 77, 56;
+    --gf-c2: 77, 23, 23;
+    --gf-c3: 203, 203, 203;
+    --gf-c4: 110, 150, 132;
+    --gf-c5: 60, 90, 75;
+    --gf-interactive: 23, 77, 56;
     --gf-size: 80%;
     --gf-blend: multiply;
     --gf-alpha: 0.42; /* softer on the light grey, so text stays readable over it */
 }
 
 .dark .gradient-form {
-    --gf-bg1: #000000;
-    --gf-bg2: #0c0a0a;
-    --gf-c1: 92, 78, 78;
-    --gf-c2: 152, 134, 134;
-    --gf-c3: 60, 50, 50;
-    --gf-c4: 120, 104, 104;
-    --gf-c5: 40, 33, 33;
-    --gf-interactive: 152, 134, 134;
+    --gf-bg1: #070b09;
+    --gf-bg2: #0e1412;
+    --gf-c1: 23, 77, 56;
+    --gf-c2: 77, 23, 23;
+    --gf-c3: 40, 110, 85;
+    --gf-c4: 100, 40, 40;
+    --gf-c5: 18, 60, 44;
+    --gf-interactive: 40, 110, 85;
     --gf-blend: hard-light;
     --gf-alpha: 0.8;
 }
