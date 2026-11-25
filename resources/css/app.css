@@ -327,137 +327,49 @@
     }
 }
 
-/* Header navigation: a capsule with a glowing pill on the current (or hovered) item. See components/ui/glowing-navbar-anime. */
-@property --gn-x {
-    syntax: '<length>';
-    inherits: true;
-    initial-value: 0px;
-}
-@property --gn-w {
-    syntax: '<length>';
-    inherits: true;
-    initial-value: 0px;
-}
-@property --gn-center {
-    syntax: '<length>';
-    inherits: true;
-    initial-value: 0px;
-}
-@property --gn-on {
-    syntax: '<number>';
-    inherits: true;
-    initial-value: 0;
-}
-@property --gn-hover {
-    syntax: '<number>';
-    inherits: true;
-    initial-value: 0;
+/* Header navigation: a capsule whose underline strikes like a beam to the new page's item (components/ui/modern-navbar-gsap). */
+.beam-nav .beam-active {
+    --beam-width: 0px;
+    --beam-opacity: 0;
+    --beam-scale-x: 1;
+    --beam-scale-y: 1;
+    --beam-strike-x: 0%;
+    --beam-mask: 0%;
 }
 
-.glow-nav {
-    --gn-track: #1f2b47;
-    --gn-tile: #e3e7ee;
-    --gn-ease: cubic-bezier(0.41, -0.09, 0.55, 1.09);
-    --gn-time: 300ms;
-    position: relative;
-    border-radius: 999px;
-    background: var(--gn-track);
-    color: #fafaf8;
-    transition:
-        --gn-x var(--gn-time) var(--gn-ease),
-        --gn-w var(--gn-time) var(--gn-ease),
-        --gn-center var(--gn-time) var(--gn-ease),
-        --gn-on var(--gn-time) var(--gn-ease);
-}
-
-.dark .glow-nav {
-    --gn-track: #0b1020;
-    --gn-tile: #56637f;
-    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.08);
-}
-
-/* Soft light behind the pill. */
-.glow-nav::before {
-    content: '';
+.beam-nav .beam-active > svg,
+.beam-nav .beam-active .beam-strike {
     position: absolute;
-    inset-block: 0;
-    left: 0;
-    width: calc(var(--gn-w) - 8px);
-    border-radius: 999px;
-    background: rgb(255 255 255 / calc(var(--gn-on) * 16%));
-    filter: blur(14px);
-    transform: translateX(var(--gn-x)) scale(1.1);
-    pointer-events: none;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: var(--beam-width);
+    opacity: var(--beam-opacity);
+    mix-blend-mode: screen;
 }
 
-.glow-nav ul {
-    position: relative;
-    display: flex;
-    border-radius: 999px;
-    /* A 1px rim that brightens under the pill. */
-    background-image: radial-gradient(
-        ellipse 110px 60px at var(--gn-center) bottom,
-        rgb(255 255 255 / calc(var(--gn-on) * 90%)) 0%,
-        rgb(255 255 255 / 0.14) 100%
-    );
+.beam-nav .beam-active > svg {
+    display: block;
+    overflow: visible;
+    height: 5px;
+    filter: blur(0.5px) drop-shadow(2px 0 8px rgb(106 170 255 / 0.85)) drop-shadow(0 0 3px rgb(106 170 255 / 0.45));
 }
 
-.glow-nav ul::before {
-    content: '';
-    position: absolute;
-    inset: 1px;
-    border-radius: 999px;
-    background: var(--gn-track);
+.beam-nav .beam-active .beam-strike {
+    padding: 24px 0;
+    mask-image: linear-gradient(to right, transparent var(--beam-mask), black calc(15% + var(--beam-mask)), black 80%, transparent);
 }
 
-/* The pill itself: glassy, lit from below. */
-.glow-nav ul::after {
-    content: '';
-    position: absolute;
-    z-index: 1;
-    top: 4px;
-    left: 4px;
-    width: calc(var(--gn-w) - 8px);
-    height: calc(100% - 8px);
-    border-radius: 999px;
-    background: linear-gradient(to bottom, rgb(255 255 255 / calc(var(--gn-on) * 6%)), rgb(255 255 255 / calc(var(--gn-on) * 8%)));
-    box-shadow: inset 0 -5px 12px rgb(255 255 255 / calc(var(--gn-on) * 28%));
-    transform: translateX(var(--gn-x));
-    pointer-events: none;
+.beam-nav .beam-active .beam-strike svg {
+    display: block;
+    overflow: visible;
+    height: 12px;
+    width: calc(var(--beam-width) * 2);
+    transform: translate(var(--beam-strike-x), 30%) scale(var(--beam-scale-x), var(--beam-scale-y));
 }
 
-.glow-nav li {
-    position: relative;
-    perspective: 600px;
-    transform-style: preserve-3d;
-}
-
-/* The tile that tilts towards the cursor over items other than the current one. */
-.glow-nav li::before {
-    content: '';
-    position: absolute;
-    z-index: 1;
-    inset: 4px;
-    border-radius: 999px;
-    background: linear-gradient(to bottom, var(--gn-tile), rgb(255 255 255 / 0.3));
-    opacity: var(--gn-hover);
-    transform: scale(0.9) rotateY(calc(var(--gn-tilt-y, 0) * -3deg)) rotateX(calc(var(--gn-tilt-x, 0) * 3deg)) translateZ(10px);
-    transition: --gn-hover var(--gn-time) var(--gn-ease);
-    pointer-events: none;
-}
-
-.glow-nav li:not([data-pill]):hover {
-    --gn-hover: 0.22;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .glow-nav,
-    .glow-nav li::before {
-        transition: none;
-    }
-    .glow-nav li::before {
-        transform: none;
-    }
+.beam-nav .beam-active .beam-strike svg:last-child {
+    transform: translate(var(--beam-strike-x), -30%) scale(-1);
 }
 
 /* Bottom menu (phones and tablets): the panel's content swaps with a soft blur. */

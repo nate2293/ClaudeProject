@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { GlowingNavbarAnime } from '@/components/ui/glowing-navbar-anime';
+import { ModernNavbarGsap } from '@/components/ui/modern-navbar-gsap';
 import { primaryNav } from '@/data/storefront';
 import { isCurrentUrl } from '@/lib/utils';
 import { type SharedData } from '@/types';
@@ -23,7 +23,7 @@ export function SiteHeader() {
                 </div>
 
                 <div className="hidden flex-1 justify-center lg:flex">
-                    <GlowingNavbarAnime
+                    <ModernNavbarGsap
                         items={links.map((link) => ({
                             label: link.label,
                             href: link.href,
