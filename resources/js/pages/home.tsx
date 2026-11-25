@@ -10,7 +10,7 @@ interface HomeProps {
 
 export default function Home({ featuredProducts, collection }: HomeProps) {
     return (
-        <ShopLayout title="Clothes in natural cloth" footer={false}>
+        <ShopLayout title="Clothes in natural cloth">
             <div className="pb-12 sm:pb-16">
                 <Hero products={featuredProducts} />
                 <CollectionFiguresSection collection={collection} />

@@ -44,10 +44,3 @@ export function footerLinks(departments: NavLink[]): FooterLinkGroup[] {
         },
     ];
 }
-
-/** Replace with your real profile URLs. */
-export const socialLinks: NavLink[] = [
-    { label: 'Instagram', href: 'https://www.instagram.com/' },
-    { label: 'Pinterest', href: 'https://www.pinterest.com/' },
-    { label: 'TikTok', href: 'https://www.tiktok.com/' },
-];
