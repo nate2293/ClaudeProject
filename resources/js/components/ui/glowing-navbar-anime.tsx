@@ -108,9 +108,9 @@ export function GlowingNavbarAnime({ items = defaultItems, label = 'Main', class
                             onMouseMove={tilt}
                             className={cn(
                                 'relative z-10 flex h-full items-center rounded-full px-4 text-sm font-medium transition-opacity xl:px-5',
-                                'focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:outline-none focus-visible:ring-inset',
-                                pill === index ? 'opacity-100' : 'opacity-75 hover:opacity-100',
-                                item.tone === 'sale' && 'text-[#ff9aa5]',
+                                'focus-visible:ring-2 focus-visible:ring-current/50 focus-visible:outline-none focus-visible:ring-inset',
+                                pill === index ? 'opacity-100' : 'opacity-80 hover:opacity-100',
+                                item.tone === 'sale' && 'text-brand dark:text-[#ff9aa5]',
                             )}
                         >
                             {item.label}
