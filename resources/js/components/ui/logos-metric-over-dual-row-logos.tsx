@@ -13,8 +13,8 @@ export interface MarqueeItem {
 export interface LogosMetricOverDualRowLogosProps {
     /** Small line above the figure. */
     eyebrow?: string;
-    /** The big figure, e.g. 12000 (formatted with thousands separators). */
-    metric?: number | string;
+    /** The big figure, e.g. 12000 (formatted with thousands separators). null hides it. */
+    metric?: number | string | null;
     /** Shown after the figure in a lighter tone, e.g. "+". */
     metricSuffix?: string;
     description?: ReactNode;
@@ -102,15 +102,19 @@ export function LogosMetricOverDualRowLogos({
 }: LogosMetricOverDualRowLogosProps) {
     const [paused, setPaused] = useState(false);
     const figure = typeof metric === 'number' ? new Intl.NumberFormat('en-GB').format(metric) : metric;
+    const hasIntro = Boolean(eyebrow || figure || description || facts.length);
 
     return (
         <section aria-label={label} className={cn('py-12 sm:py-16', className)}>
-            <div className="mx-auto max-w-2xl px-4 text-center">
+            {hasIntro && (
+            <div className="mx-auto max-w-2xl px-4 text-center [&>*:first-child]:mt-0">
                 {eyebrow && <p className="text-muted-foreground text-sm">{eyebrow}</p>}
-                <p className="font-logo text-foreground mt-3 text-6xl leading-[1.05] tabular-nums sm:text-7xl lg:text-8xl">
-                    {figure}
-                    {metricSuffix && <span className="text-foreground/55">{metricSuffix}</span>}
-                </p>
+                {figure && (
+                    <p className="font-logo text-foreground mt-3 text-6xl leading-[1.05] tabular-nums sm:text-7xl lg:text-8xl">
+                        {figure}
+                        {metricSuffix && <span className="text-foreground/55">{metricSuffix}</span>}
+                    </p>
+                )}
                 {description && <p className="text-muted-foreground mx-auto mt-4 max-w-xl text-base leading-relaxed text-pretty sm:text-lg">{description}</p>}
                 {facts.length > 0 && (
                     <ul className="text-muted-foreground mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm">
@@ -123,10 +127,12 @@ export function LogosMetricOverDualRowLogos({
                     </ul>
                 )}
             </div>
+            )}
 
             <div
                 className={cn(
-                    'group/marquee relative mt-12 space-y-6 overflow-hidden',
+                    'group/marquee relative space-y-6 overflow-hidden',
+                    hasIntro && 'mt-10',
                     // Soft edges that fade to whatever is behind (a flat colour or a gradient).
                     '[mask-image:linear-gradient(to_right,transparent,black_4rem,black_calc(100%-4rem),transparent)] sm:[mask-image:linear-gradient(to_right,transparent,black_10rem,black_calc(100%-10rem),transparent)] motion-reduce:[mask-image:none]',
                 )}

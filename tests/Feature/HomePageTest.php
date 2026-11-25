@@ -38,7 +38,6 @@ class HomePageTest extends TestCase
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
                 ->where('collection.pieces', 2)
-                ->where('collection.colourways', 3)
                 ->where('collection.cloths', ['Merino wool', 'Linen'])
                 ->has('collection.names', 2)
                 ->where('collection.freeDeliveryOver', config('shop.shipping.free_threshold'))

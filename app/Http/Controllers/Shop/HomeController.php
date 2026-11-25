@@ -52,7 +52,6 @@ class HomeController extends Controller
 
         return [
             'pieces' => $products->count(),
-            'colourways' => $products->sum(fn (Product $p) => max(1, count($p->colours ?? []))),
             'cloths' => collect(self::CLOTHS)
                 ->filter(fn (string $needle) => $materials->contains(fn (string $m) => str_contains($m, $needle)))
                 ->keys()
