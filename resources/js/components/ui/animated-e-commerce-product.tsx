@@ -1,3 +1,4 @@
+import { magneticLabel, useMagnetic } from '@/hooks/use-magnetic';
 import { contrastRatio, mix, readableInk } from '@/lib/colour';
 import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
@@ -92,6 +93,11 @@ export function AnimatedEcommerceProduct(props: Partial<AnimatedEcommerceProduct
     const firstSize = useRef<HTMLButtonElement>(null);
     const dots = useRef<(HTMLButtonElement | null)[]>([]);
     const id = useId();
+    const magnet = useMagnetic<HTMLButtonElement>({ strength: 0.35, radius: 60 });
+    const setAddButton = (el: HTMLButtonElement | null) => {
+        addButton.current = el;
+        magnet(el);
+    };
 
     const active = colourways[index] ?? colourways[0];
     const photo = active.image ?? image;
@@ -316,7 +322,7 @@ export function AnimatedEcommerceProduct(props: Partial<AnimatedEcommerceProduct
                     <div>{price}</div>
                     {onAddToCart && (
                         <button
-                            ref={addButton}
+                            ref={setAddButton}
                             type="button"
                             onClick={onAddClick}
                             disabled={colourSoldOut || status === 'adding'}
@@ -336,6 +342,7 @@ export function AnimatedEcommerceProduct(props: Partial<AnimatedEcommerceProduct
                                 className="absolute inset-0 -z-10 opacity-0 transition-opacity duration-300 group-hover/btn:opacity-100 group-focus-visible/btn:opacity-100 group-disabled/btn:opacity-0!"
                                 style={{ background: `linear-gradient(135deg, ${active.hex}, ${mix(active.hex, -0.3)})` }}
                             />
+                            <span className={magneticLabel}>
                             {status === 'adding' ? (
                                 <LoaderCircle className="size-3.5 animate-spin" aria-hidden />
                             ) : status === 'added' ? (
@@ -344,6 +351,7 @@ export function AnimatedEcommerceProduct(props: Partial<AnimatedEcommerceProduct
                                 <ShoppingBag className="size-3.5" aria-hidden />
                             )}
                             {colourSoldOut ? 'Sold out' : status === 'added' ? 'Added' : addLabel}
+                            </span>
                         </button>
                     )}
                 </div>
