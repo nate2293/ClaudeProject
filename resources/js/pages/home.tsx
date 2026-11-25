@@ -15,7 +15,7 @@ interface HomeProps {
 export default function Home({ categories, featuredProducts }: HomeProps) {
     return (
         <ShopLayout title="Clothes in natural cloth">
-            <Hero products={featuredProducts} categories={categories} />
+            <Hero products={featuredProducts} />
             <CategoryGrid categories={categories} />
             <EditorialBanner />
             <Testimonials items={testimonials} />
