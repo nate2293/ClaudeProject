@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
+import { GlowingNavbarAnime } from '@/components/ui/glowing-navbar-anime';
 import { primaryNav } from '@/data/storefront';
-import { cn, isCurrentUrl } from '@/lib/utils';
+import { isCurrentUrl } from '@/lib/utils';
 import { type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { ShoppingBag } from 'lucide-react';
@@ -23,29 +24,16 @@ export function SiteHeader() {
                     <ShopLogo />
                 </div>
 
-                <nav className="hidden flex-1 justify-center lg:flex" aria-label="Main">
-                    <ul className="flex items-center gap-8">
-                        {links.map((link) => {
-                            const active = isCurrentUrl(link.href, url);
-
-                            return (
-                                <li key={link.label}>
-                                    <Link
-                                        href={link.href}
-                                        aria-current={active ? 'page' : undefined}
-                                        className={cn(
-                                            'text-sm font-medium transition-colors',
-                                            active ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
-                                            link.label === 'Sale' && 'text-brand hover:text-brand/80',
-                                        )}
-                                    >
-                                        {link.label}
-                                    </Link>
-                                </li>
-                            );
-                        })}
-                    </ul>
-                </nav>
+                <div className="hidden flex-1 justify-center lg:flex">
+                    <GlowingNavbarAnime
+                        items={links.map((link) => ({
+                            label: link.label,
+                            href: link.href,
+                            active: isCurrentUrl(link.href, url),
+                            tone: link.label === 'Sale' ? 'sale' : 'default',
+                        }))}
+                    />
+                </div>
 
                 <div className="flex items-center justify-end gap-1">
                     <SearchDialog />
