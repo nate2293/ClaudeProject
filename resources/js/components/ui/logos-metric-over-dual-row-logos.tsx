@@ -124,11 +124,13 @@ export function LogosMetricOverDualRowLogos({
                 )}
             </div>
 
-            <div className="group/marquee relative mt-12 space-y-6 overflow-hidden">
-                {/* Soft edges. */}
-                <div aria-hidden className="from-background pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r to-transparent motion-reduce:hidden sm:w-40" />
-                <div aria-hidden className="from-background pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l to-transparent motion-reduce:hidden sm:w-40" />
-
+            <div
+                className={cn(
+                    'group/marquee relative mt-12 space-y-6 overflow-hidden',
+                    // Soft edges that fade to whatever is behind (a flat colour or a gradient).
+                    '[mask-image:linear-gradient(to_right,transparent,black_4rem,black_calc(100%-4rem),transparent)] sm:[mask-image:linear-gradient(to_right,transparent,black_10rem,black_calc(100%-10rem),transparent)] motion-reduce:[mask-image:none]',
+                )}
+            >
                 {topRow.length > 0 && <Row items={topRow} label={topRowLabel} direction="left" duration={topDuration} paused={paused} />}
                 {bottomRow.length > 0 && <Row items={bottomRow} label={bottomRowLabel} direction="right" duration={bottomDuration} paused={paused} />}
             </div>

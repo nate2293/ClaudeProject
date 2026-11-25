@@ -2,6 +2,7 @@ import { LogosMetricOverDualRowLogos, type MarqueeItem } from '@/components/ui/l
 import { formatPrice } from '@/lib/format';
 import { Briefcase, Droplets, Feather, Gem, Layers, Leaf, Recycle, Scissors, Shirt, Snowflake, Sprout, Wind } from 'lucide-react';
 import type { ReactNode } from 'react';
+import { Container } from '../container';
 
 export interface CollectionFigures {
     pieces: number;
@@ -35,17 +36,20 @@ export function CollectionFiguresSection({ collection }: { collection: Collectio
     const pieces: MarqueeItem[] = collection.names.map((piece) => ({ label: piece.name, swatch: piece.swatch ?? undefined }));
 
     return (
-        <LogosMetricOverDualRowLogos
-            label="The collection in numbers"
-            eyebrow="The collection"
-            metric={collection.pieces}
-            metricSuffix=""
-            description={`pieces, in ${collection.colourways} colourways and ${collection.cloths.length} kinds of cloth.`}
-            facts={[`Free UK delivery over ${formatPrice(collection.freeDeliveryOver)}`, `Free returns within ${collection.returnDays} days`]}
-            topRow={cloths}
-            topRowLabel="Cloths we use"
-            bottomRow={pieces}
-            bottomRowLabel="Pieces in the collection"
-        />
+        <Container className="mt-6">
+            <LogosMetricOverDualRowLogos
+                className="rounded-card bg-card/75 border backdrop-blur-md"
+                label="The collection in numbers"
+                eyebrow="The collection"
+                metric={collection.pieces}
+                metricSuffix=""
+                description={`pieces, in ${collection.colourways} colourways and ${collection.cloths.length} kinds of cloth.`}
+                facts={[`Free UK delivery over ${formatPrice(collection.freeDeliveryOver)}`, `Free returns within ${collection.returnDays} days`]}
+                topRow={cloths}
+                topRowLabel="Cloths we use"
+                bottomRow={pieces}
+                bottomRowLabel="Pieces in the collection"
+            />
+        </Container>
     );
 }
