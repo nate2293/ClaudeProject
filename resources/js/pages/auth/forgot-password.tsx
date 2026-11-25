@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 import { GradientField, gradientButtonClass } from '@/components/ui/gradient-animated-form';
 import AuthLayout from '@/layouts/auth-layout';
 import { Head, useForm } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
 import { type FormEventHandler } from 'react';
 
 export default function ForgotPassword({ status }: { status?: string }) {
@@ -32,8 +31,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
                     onChange={(e) => setData('email', e.target.value)}
                     error={errors.email}
                 />
-                <Button type="submit" className={gradientButtonClass} magneticStrength={0.15} disabled={processing}>
-                    {processing && <LoaderCircle className="animate-spin" />}
+                <Button type="submit" className={gradientButtonClass} loading={processing}>
                     Email me a reset link
                 </Button>
             </form>

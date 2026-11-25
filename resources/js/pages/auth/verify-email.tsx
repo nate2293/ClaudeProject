@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 import { gradientButtonClass } from '@/components/ui/gradient-animated-form';
 import AuthLayout from '@/layouts/auth-layout';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
 import { type FormEventHandler } from 'react';
 
 export default function VerifyEmail({ status }: { status?: string }) {
@@ -21,8 +20,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
             {status === 'verification-link-sent' && <AuthStatus>We’ve sent a new verification link to your email address.</AuthStatus>}
 
             <form onSubmit={submit} className="space-y-5 text-center">
-                <Button type="submit" className={gradientButtonClass} magneticStrength={0.15} disabled={processing}>
-                    {processing && <LoaderCircle className="animate-spin" />}
+                <Button type="submit" className={gradientButtonClass} loading={processing}>
                     Resend the email
                 </Button>
                 <Link href={route('logout')} method="post" as="button" className="mx-auto block text-sm opacity-80 hover:underline">

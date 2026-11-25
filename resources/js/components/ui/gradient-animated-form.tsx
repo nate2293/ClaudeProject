@@ -222,7 +222,7 @@ function SampleForm() {
             <GradientField id="sample-email" label="Email" type="email" autoComplete="email" required />
             <GradientField id="sample-password" label="Password" type="password" revealable autoComplete="new-password" required />
             <GradientCheckbox id="sample-remember" label="Remember me" />
-            <button type="submit" className={cn('rounded-full', gradientButtonClass)}>
+            <button type="submit" className={cn('rounded-md', gradientButtonClass)}>
                 Sign up
             </button>
         </form>

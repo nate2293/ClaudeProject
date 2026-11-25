@@ -2,7 +2,6 @@ import { Button } from '@/components/ui/button';
 import { GradientField, gradientButtonClass } from '@/components/ui/gradient-animated-form';
 import AuthLayout from '@/layouts/auth-layout';
 import { Head, useForm } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
 import { type FormEventHandler } from 'react';
 
 export default function ConfirmPassword() {
@@ -30,8 +29,7 @@ export default function ConfirmPassword() {
                     onChange={(e) => setData('password', e.target.value)}
                     error={errors.password}
                 />
-                <Button type="submit" className={gradientButtonClass} magneticStrength={0.15} disabled={processing}>
-                    {processing && <LoaderCircle className="animate-spin" />}
+                <Button type="submit" className={gradientButtonClass} loading={processing}>
                     Confirm password
                 </Button>
             </form>

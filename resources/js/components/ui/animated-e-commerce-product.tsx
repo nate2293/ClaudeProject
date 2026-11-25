@@ -1,4 +1,3 @@
-import { magneticLabel, useMagnetic } from '@/hooks/use-magnetic';
 import { contrastRatio, mix, readableInk } from '@/lib/colour';
 import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
@@ -93,11 +92,6 @@ export function AnimatedEcommerceProduct(props: Partial<AnimatedEcommerceProduct
     const firstSize = useRef<HTMLButtonElement>(null);
     const dots = useRef<(HTMLButtonElement | null)[]>([]);
     const id = useId();
-    const magnet = useMagnetic<HTMLButtonElement>({ strength: 0.35, radius: 60 });
-    const setAddButton = (el: HTMLButtonElement | null) => {
-        addButton.current = el;
-        magnet(el);
-    };
 
     const active = colourways[index] ?? colourways[0];
     const photo = active.image ?? image;
@@ -322,16 +316,16 @@ export function AnimatedEcommerceProduct(props: Partial<AnimatedEcommerceProduct
                     <div>{price}</div>
                     {onAddToCart && (
                         <button
-                            ref={setAddButton}
+                            ref={addButton}
                             type="button"
                             onClick={onAddClick}
                             disabled={colourSoldOut || status === 'adding'}
                             aria-expanded={sizes.length > 1 ? picking : undefined}
                             aria-controls={sizes.length > 1 ? `${id}-sizes` : undefined}
                             className={cn(
-                                'group/btn relative isolate inline-flex h-9 items-center gap-1.5 overflow-hidden rounded-full border px-4 text-xs font-semibold transition-colors duration-300',
+                                'group/btn relative isolate inline-flex h-9 items-center gap-1.5 overflow-hidden rounded-md border px-4 text-xs font-semibold transition-[color,border-color,scale] duration-150 enabled:active:scale-[0.98] motion-reduce:transition-none [@media(pointer:coarse)]:min-h-11',
                                 'border-(--cw-ink) text-(--cw-ink) dark:border-(--cw-ink-dark) dark:text-(--cw-ink-dark)',
-                                'focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+                                'focus-visible:ring-ring focus-visible:ring-[3px] focus-visible:ring-offset-2 focus-visible:outline-none',
                                 'enabled:hover:border-transparent enabled:hover:text-(--cw-fill-text) enabled:focus-visible:text-(--cw-fill-text)',
                                 'disabled:border-border disabled:text-muted-foreground disabled:cursor-not-allowed',
                             )}
@@ -339,10 +333,10 @@ export function AnimatedEcommerceProduct(props: Partial<AnimatedEcommerceProduct
                         >
                             <span
                                 aria-hidden
-                                className="absolute inset-0 -z-10 opacity-0 transition-opacity duration-300 group-hover/btn:opacity-100 group-focus-visible/btn:opacity-100 group-disabled/btn:opacity-0!"
+                                className="absolute inset-0 -z-10 opacity-0 transition-opacity duration-150 group-hover/btn:opacity-100 group-focus-visible/btn:opacity-100 group-disabled/btn:opacity-0!"
                                 style={{ background: `linear-gradient(135deg, ${active.hex}, ${mix(active.hex, -0.3)})` }}
                             />
-                            <span className={magneticLabel}>
+                            <>
                             {status === 'adding' ? (
                                 <LoaderCircle className="size-3.5 animate-spin" aria-hidden />
                             ) : status === 'added' ? (
@@ -351,7 +345,7 @@ export function AnimatedEcommerceProduct(props: Partial<AnimatedEcommerceProduct
                                 <ShoppingBag className="size-3.5" aria-hidden />
                             )}
                             {colourSoldOut ? 'Sold out' : status === 'added' ? 'Added' : addLabel}
-                            </span>
+                            </>
                         </button>
                     )}
                 </div>

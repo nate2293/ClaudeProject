@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 import { GradientField, gradientButtonClass } from '@/components/ui/gradient-animated-form';
 import AuthLayout from '@/layouts/auth-layout';
 import { Head, useForm } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
 import { type FormEventHandler } from 'react';
 
 type RegisterForm = {
@@ -80,8 +79,7 @@ export default function Register() {
                     error={errors.password_confirmation}
                 />
 
-                <Button type="submit" className={gradientButtonClass} magneticStrength={0.15} disabled={processing}>
-                    {processing && <LoaderCircle className="animate-spin" />}
+                <Button type="submit" className={gradientButtonClass} loading={processing}>
                     Create account
                 </Button>
             </form>

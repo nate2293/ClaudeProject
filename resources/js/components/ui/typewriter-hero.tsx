@@ -153,7 +153,7 @@ export function TypewriterHero({
                         </Button>
                     )}
                     {secondaryAction && (
-                        <Button asChild size="lg" variant="ghost" className="h-12 min-w-40 text-base">
+                        <Button asChild size="lg" variant="outline" className="h-12 min-w-40 text-base">
                             <Link href={secondaryAction.href}>{secondaryAction.label}</Link>
                         </Button>
                     )}
