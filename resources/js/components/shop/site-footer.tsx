@@ -1,9 +1,25 @@
-import { CtaFooter } from '@/components/ui/cta-footer';
+import { NewsletterFooter } from '@/components/ui/newsletter-footer';
 import { footerLinks, storeName } from '@/data/storefront';
 import { type SharedData } from '@/types';
-import { usePage } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 
-/** The storefront footer: Shop / Help / About links and the legal lines. */
+/** Sign up through the double opt-in endpoint: the address joins only after the emailed link is clicked. */
+function subscribe(email: string) {
+    return new Promise<void>((resolve, reject) => {
+        router.post(
+            route('newsletter.store'),
+            { email },
+            {
+                preserveScroll: true,
+                preserveState: true,
+                onSuccess: () => resolve(),
+                onError: (errors) => reject(new Error(errors.email ?? 'That didn’t work. Please try again.')),
+            },
+        );
+    });
+}
+
+/** The storefront footer: Shop / Help / About links, the newsletter sign-up, and the legal lines. */
 export function SiteFooter() {
     const { navigation, shop } = usePage<SharedData>().props;
     const { legalName, companyNumber, vatNumber } = shop.business;
@@ -12,11 +28,22 @@ export function SiteFooter() {
     const registration = [companyNumber && `Company no. ${companyNumber}`, vatNumber && `VAT no. ${vatNumber}`].filter(Boolean).join(', ');
 
     return (
-        <CtaFooter
-            title={null}
-            description={null}
-            action={null}
+        <NewsletterFooter
             columns={footerLinks(navigation)}
+            newsletterTitle="Hear about new collections first"
+            newsletterDescription="One email when a new collection lands, and the occasional sale. No more than twice a month."
+            successMessage="Nearly done: check your inbox and click the link to confirm."
+            buttonLabel="Sign up"
+            onSubscribe={subscribe}
+            newsletterNote={
+                <>
+                    Unsubscribe from any email in one click. We never share your address. See our{' '}
+                    <Link href={route('pages.privacy')} className="hover:text-foreground underline underline-offset-4">
+                        privacy policy
+                    </Link>
+                    .
+                </>
+            }
             legal={
                 <>
                     <p>
