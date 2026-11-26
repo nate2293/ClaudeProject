@@ -17,10 +17,10 @@ export interface CtaFooterColumn {
 }
 
 export interface CtaFooterProps {
-    /** The call to action's heading. */
+    /** The call to action's heading. Pass null (with action null) to leave the band out. */
     title?: ReactNode;
     description?: ReactNode;
-    action?: { label: string; href: string };
+    action?: { label: string; href: string } | null;
     columns?: CtaFooterColumn[];
     /** Bottom bar: copyright and legal lines. */
     legal?: ReactNode;

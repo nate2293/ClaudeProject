@@ -1,10 +1,9 @@
 import { CtaFooter } from '@/components/ui/cta-footer';
 import { footerLinks, storeName } from '@/data/storefront';
-import { formatPrice } from '@/lib/format';
 import { type SharedData } from '@/types';
 import { usePage } from '@inertiajs/react';
 
-/** The storefront footer: a shop call to action, Shop / Help / About links, and the legal lines. */
+/** The storefront footer: Shop / Help / About links and the legal lines. */
 export function SiteFooter() {
     const { navigation, shop } = usePage<SharedData>().props;
     const { legalName, companyNumber, vatNumber } = shop.business;
@@ -14,9 +13,9 @@ export function SiteFooter() {
 
     return (
         <CtaFooter
-            title="Clothes for years, not seasons"
-            description={`Free UK delivery over ${formatPrice(shop.freeShippingThreshold)} and free returns within ${shop.returnDays} days.`}
-            action={{ label: 'Shop the collection', href: route('shop.index') }}
+            title={null}
+            description={null}
+            action={null}
             columns={footerLinks(navigation)}
             legal={
                 <>
